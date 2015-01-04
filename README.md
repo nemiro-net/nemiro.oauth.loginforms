@@ -27,7 +27,7 @@ login.ShowDialog();
 // authorization is success
 if (login.IsSuccessfully)
 {
-  // use the access token for API requests
+  // use the access token for requests to API
   MessageBox.Show(login.AccessToken.Value);
 }
 ```
@@ -40,7 +40,7 @@ Dim login As New DropboxLogin("5nkunr8uscwfoba", "n7x9icfwoe6dehq") With { .Owne
 login.ShowDialog()
 ' authorization is success
 If login.IsSuccessfully Then
-  ' use the access token for API requests
+  ' use the access token for requests to API
   MessageBox.Show(login.AccessToken.Value)
 End If
 ```
