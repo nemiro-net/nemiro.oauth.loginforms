@@ -1,0 +1,7 @@
+Nemiro.OAuth.LoginForms Release Notes
+
+This document summarizes the major changes in recent releases.
+
+v1.0 (January 04, 2015)
+
+* First version released.
