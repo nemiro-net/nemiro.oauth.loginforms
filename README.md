@@ -18,6 +18,11 @@ To install **Nemiro.OAuth.LoginForms**, run the following command in the **Packa
 
 ### How to use
 
+Create an authorization form for a provider **OAuth**.
+Use the **Client ID** and **Secret Key** that you received from the provider.
+
+For example, **DropBox**:
+
 **C#**
 ```C#
 // create login form
