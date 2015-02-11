@@ -40,6 +40,12 @@ namespace TestProject1
     }
 
     [TestMethod]
+    public void CodeProject()
+    {
+      this.TestForm(new CodeProjectLogin("92mWWELc2DjcL-6tu7L1Py6yllleqSCt", "YJXrk_Vzz4Ps02GqmaUY-aSLucxh4kfLq6oq0CtiukPfvbzb9yQG69NeDr2yiV9M", "https://oauthproxy.nemiro.net/"));
+    }
+
+    [TestMethod]
     public void Dropbox()
     {
       this.TestForm(new DropboxLogin("5nkunr8uscwfoba", "n7x9icfwoe6dehq"));
@@ -141,11 +147,15 @@ namespace TestProject1
       Console.WriteLine(form.IsSuccessfully);
       if (form.IsSuccessfully)
       {
-        Console.WriteLine(form.AccessToken.Value);
-        if (String.IsNullOrEmpty(form.AccessToken.Value))
+        Console.WriteLine(form.AccessTokenValue);
+        if (String.IsNullOrEmpty(form.AccessTokenValue))
         {
           Assert.Fail();
         }
+      }
+      else
+      {
+        Assert.Fail();
       }
     }
 

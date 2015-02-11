@@ -52,6 +52,18 @@ namespace Nemiro.OAuth.LoginForms
     }
 
     /// <summary>
+    /// Gets the access token value.
+    /// </summary>
+    public string AccessTokenValue
+    {
+      get
+      {
+        if (!this.IsSuccessfully) { return null; }
+        return this.AccessToken.Value;
+      }
+    }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="Login"/> class.
     /// </summary>
     protected Login()
@@ -69,6 +81,7 @@ namespace Nemiro.OAuth.LoginForms
       this.Client = client;
       this.Text = String.Format(this.Text, this.Client.ProviderName);
       this.ShowProgress();
+      this.webBrowser1.ScriptErrorsSuppressed = true;
       webBrowser1.DocumentCompleted += webBrowser1_DocumentCompleted;
       Task.Factory.StartNew(() => this.SetUrl(this.Client.AuthorizationUrl));
     }

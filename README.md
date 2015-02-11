@@ -12,7 +12,7 @@ To install **Nemiro.OAuth.LoginForms**, run the following command in the **Packa
 
 ### System Requirements
 
-* [Nemiro.OAuth](https://github.com/alekseynemiro/nemiro.oauth.dll) v1.6 or later;
+* [Nemiro.OAuth](https://github.com/alekseynemiro/nemiro.oauth.dll) v1.7 or later;
 * Microsoft Windows XP, 7 or later with .NET Framework 4.0 or 4.5 or later;
 * Microsoft Visual Studio 2010 (recommended Professional Edition with Service Pack 1) or later.
 

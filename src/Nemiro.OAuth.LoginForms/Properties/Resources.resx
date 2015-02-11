@@ -181,4 +181,10 @@
   <data name="yandex" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\yandex.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="sourceforge" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sourceforge.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="codeproject" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\codeproject.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

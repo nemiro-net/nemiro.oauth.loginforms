@@ -34,9 +34,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nemiro.OAuth, Version=1.6.4.610, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Nemiro.OAuth.1.6\lib\net40\Nemiro.OAuth.dll</HintPath>
+    <Reference Include="Nemiro.OAuth">
+      <HintPath>..\packages\Nemiro.OAuth.1.7\lib\net40\Nemiro.OAuth.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -102,6 +101,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LoginForms\YandexLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginForms\CodeProjectLogin.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -313,6 +315,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\printerest.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sourceforge.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\codeproject.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

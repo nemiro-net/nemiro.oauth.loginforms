@@ -1,6 +1,11 @@
 Nemiro.OAuth.LoginForms Release Notes
 
-This document summarizes the major changes in recent releases.
+This document summarizes the changes in recent releases.
+
+v1.1 (February 11, 2015)
+
+* Added the AccessTokenValue property;
+* Added form for CodeProject.
 
 v1.0 (January 04, 2015)
 
