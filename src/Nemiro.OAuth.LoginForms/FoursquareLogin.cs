@@ -28,11 +28,11 @@ namespace Nemiro.OAuth.LoginForms
     
     public FoursquareLogin(string clientId, string clientSecret, string returnUrl) : this(clientId, clientSecret, returnUrl, null) { }
 
-    public FoursquareLogin(string clientId, string clientSecret, string returnUrl, string scope) : this(new FoursquareClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope, Parameters = { {"display", "webpopup" }} }) { }
+    public FoursquareLogin(string clientId, string clientSecret, string returnUrl, string scope) : this(new FoursquareClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope, Parameters = { { "display", "touch" } } }) { }
 
     public FoursquareLogin(FoursquareClient client) : base(client) 
     {
-      this.Height = 515;
+      this.Height = 555;
       this.Icon = Properties.Resources.foursquare;
     }
 
