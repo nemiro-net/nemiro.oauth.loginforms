@@ -143,7 +143,8 @@ namespace TestProject1
 
     private void TestForm(Login form)
     {
-      Console.WriteLine(form.ShowDialog());
+      var r = form.ShowDialog();
+      Console.WriteLine(r);
       Console.WriteLine(form.IsSuccessfully);
       if (form.IsSuccessfully)
       {

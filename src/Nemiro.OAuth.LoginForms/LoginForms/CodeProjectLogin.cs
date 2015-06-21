@@ -35,24 +35,6 @@ namespace Nemiro.OAuth.LoginForms
       this.Height = 550;
     }
 
-    public void WebDocumentLoaded(System.Windows.Forms.WebBrowser webBrowser, Uri url)
-    {
-      if (!url.OriginalString.Equals("about:blank", StringComparison.InvariantCultureIgnoreCase))
-      {
-        webBrowser.DocumentText = webBrowser.DocumentText.Insert
-        (
-          webBrowser.DocumentText.IndexOf("</head>"), 
-          String.Format
-          (
-            "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" /><base href=\"{0}://{1}{2}\">", 
-            url.Scheme,
-            url.Host,
-            ""//url.AbsolutePath
-          )
-        );
-      }
-    }
-
   }
 
 }

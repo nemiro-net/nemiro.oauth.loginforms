@@ -71,6 +71,7 @@ namespace Nemiro.OAuth.LoginForms
       this.MaximizeBox = false;
       this.MinimizeBox = false;
       this.Name = "Login";
+      this.Load += new System.EventHandler(this.Login_Load);
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
       this.ResumeLayout(false);
 

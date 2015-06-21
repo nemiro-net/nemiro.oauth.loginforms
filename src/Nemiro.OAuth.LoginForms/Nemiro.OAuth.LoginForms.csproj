@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BrowserEmulationVersion.cs" />
     <Compile Include="LoginForms\AmazonLogin.cs">
       <SubType>Form</SubType>
     </Compile>

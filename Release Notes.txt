@@ -2,6 +2,11 @@ Nemiro.OAuth.LoginForms Release Notes
 
 This document summarizes the changes in recent releases.
 
+v1.2 (June 21, 2015)
+
+* Added lock on re-obtain an access token (fixed problem with Dropbox form);
+* Automatic switching WebBrowser to latest version IE.
+
 v1.1 (February 11, 2015)
 
 * Added the AccessTokenValue property;

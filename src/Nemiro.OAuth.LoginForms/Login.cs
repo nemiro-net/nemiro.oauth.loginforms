@@ -22,6 +22,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading.Tasks;
+using Microsoft.Win32;
+using System.Security;
+using System.IO;
 
 namespace Nemiro.OAuth.LoginForms
 {
@@ -83,7 +86,16 @@ namespace Nemiro.OAuth.LoginForms
       this.ShowProgress();
       this.webBrowser1.ScriptErrorsSuppressed = true;
       webBrowser1.DocumentCompleted += webBrowser1_DocumentCompleted;
+      webBrowser1.ProgressChanged += webBrowser1_ProgressChanged;
       Task.Factory.StartNew(() => this.SetUrl(this.Client.AuthorizationUrl));
+    }
+
+    private void webBrowser1_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
+    {
+      if (e.CurrentProgress == e.MaximumProgress)
+      {
+        
+      }
     }
 
     private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -115,27 +127,32 @@ namespace Nemiro.OAuth.LoginForms
       }
     }
 
+    private bool AccessTokenProcessing = false; 
+
     protected internal void GetAccessToken(string authorizationCode)
     {
-      try
+      if (this.AccessTokenProcessing) { return; }
+      this.AccessTokenProcessing = true;
+
+      // verify code
+      this.Client.AuthorizationCode = authorizationCode;
+      // show progress
+      this.ShowProgress();
+      // save access token to application settings
+      Task.Factory.StartNew(() =>
       {
-        // verify code
-        this.Client.AuthorizationCode = authorizationCode;
-        // show progress
-        this.ShowProgress();
-        // save access token to application settings
-        var t = Task.Factory.StartNew(() =>
+        try
         {
           this.IsSuccessfully = this.Client.AccessToken.IsSuccessfully;
-          this.Close();
-        });
-      }
-      catch (Exception ex)
-      {
-        // show error message
-        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        catch (Exception ex)
+        {
+          MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        // this.AccessTokenProcessing = false;
         this.Close();
-      }
+      });
     }
 
     protected internal void ShowProgress()
@@ -198,6 +215,76 @@ namespace Nemiro.OAuth.LoginForms
       }
       webBrowser1.Navigate(url);
       this.HideProgress();
+    }
+
+    private void Login_Load(object sender, EventArgs e)
+    {
+      try
+      {
+        var programName = Path.GetFileName(Environment.GetCommandLineArgs().First());
+
+        // get current version of IE emulation
+        var currentEmulationVersion = BrowserEmulationVersion.Default;
+        var emulationKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION", true);
+
+        if (emulationKey != null)
+        {
+          object value = emulationKey.GetValue(programName, null);
+
+          if (value != null)
+          {
+            Enum.TryParse<BrowserEmulationVersion>(value.ToString().Split('.').First(), out currentEmulationVersion);
+          }
+        }
+
+        // get current IE version
+        int ieVersion = 0;
+        var ieKey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Internet Explorer");
+
+        if (ieKey != null)
+        {
+          object value = ieKey.GetValue("svcVersion", null) ?? ieKey.GetValue("Version", null);
+
+          if (value != null)
+          {
+            int.TryParse(value.ToString().Split('.').First(), out ieVersion);
+          }
+        }
+
+        // check versions
+        if (ieVersion > 0 && currentEmulationVersion == BrowserEmulationVersion.Default)
+        {
+          // set IE emulation version
+          if (ieVersion >= 11)
+          {
+            emulationKey.SetValue(programName, (int)BrowserEmulationVersion.IE11, RegistryValueKind.DWord);
+          }
+          else
+          {
+            var v = BrowserEmulationVersion.IE7; 
+            switch (ieVersion)
+            {
+              case 10:
+                v = BrowserEmulationVersion.IE10;
+                break;
+              case 9:
+                v = BrowserEmulationVersion.IE9;
+                break;
+              case 8:
+                v = BrowserEmulationVersion.IE8;
+                break;
+            }
+            emulationKey.SetValue(programName, (int)v, RegistryValueKind.DWord);
+          }
+        }
+      }
+      /*catch (SecurityException)
+      {
+      }
+      catch (UnauthorizedAccessException)
+      {
+      }*/
+      catch { }
     }
 
   }

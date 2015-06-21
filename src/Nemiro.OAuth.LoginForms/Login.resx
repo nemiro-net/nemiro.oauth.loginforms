@@ -139,7 +139,7 @@
     <value>webBrowser1</value>
   </data>
   <data name="&gt;&gt;webBrowser1.Type" xml:space="preserve">
-    <value>Nemiro.OAuth.UI.WebBrowser, Nemiro.OAuth.LoginForms, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>Nemiro.OAuth.LoginForms.WebBrowser, Nemiro.OAuth.LoginForms, Version=1.1.4.650, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;webBrowser1.Parent" xml:space="preserve">
     <value>$this</value>
