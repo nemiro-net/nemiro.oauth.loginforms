@@ -21,10 +21,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Threading.Tasks;
 using Microsoft.Win32;
 using System.Security;
 using System.IO;
+using System.Threading;
 
 namespace Nemiro.OAuth.LoginForms
 {
@@ -86,17 +86,19 @@ namespace Nemiro.OAuth.LoginForms
       this.ShowProgress();
       this.webBrowser1.ScriptErrorsSuppressed = true;
       webBrowser1.DocumentCompleted += webBrowser1_DocumentCompleted;
-      webBrowser1.ProgressChanged += webBrowser1_ProgressChanged;
-      Task.Factory.StartNew(() => this.SetUrl(this.Client.AuthorizationUrl));
+      //webBrowser1.ProgressChanged += webBrowser1_ProgressChanged;
+      var t = new Thread(() => this.SetUrl(this.Client.AuthorizationUrl));
+      t.IsBackground = true;
+      t.Start();
     }
 
-    private void webBrowser1_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
+    /*private void webBrowser1_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
     {
       if (e.CurrentProgress == e.MaximumProgress)
       {
         
       }
-    }
+    }*/
 
     private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
     {
@@ -134,25 +136,30 @@ namespace Nemiro.OAuth.LoginForms
       if (this.AccessTokenProcessing) { return; }
       this.AccessTokenProcessing = true;
 
+      var t = new Thread(GetAccessTokenThread);
+      t.IsBackground = true;
+      t.Start(authorizationCode);
+    }
+
+    protected internal void GetAccessTokenThread(object args)
+    {
+      // Console.WriteLine("GetAccessTokenThread");
       // verify code
-      this.Client.AuthorizationCode = authorizationCode;
+      this.Client.AuthorizationCode = args.ToString();
       // show progress
       this.ShowProgress();
-      // save access token to application settings
-      Task.Factory.StartNew(() =>
-      {
-        try
-        {
-          this.IsSuccessfully = this.Client.AccessToken.IsSuccessfully;
-        }
-        catch (Exception ex)
-        {
-          MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
 
-        // this.AccessTokenProcessing = false;
-        this.Close();
-      });
+      try
+      {
+        this.IsSuccessfully = this.Client.AccessToken.IsSuccessfully;
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      }
+
+      // this.AccessTokenProcessing = false;
+      this.Close();
     }
 
     protected internal void ShowProgress()
@@ -233,7 +240,11 @@ namespace Nemiro.OAuth.LoginForms
 
           if (value != null)
           {
-            Enum.TryParse<BrowserEmulationVersion>(value.ToString().Split('.').First(), out currentEmulationVersion);
+            try
+            {
+              currentEmulationVersion = (BrowserEmulationVersion)Enum.Parse(typeof(BrowserEmulationVersion), value.ToString().Split('.').First());
+            }
+            catch { }
           }
         }
 

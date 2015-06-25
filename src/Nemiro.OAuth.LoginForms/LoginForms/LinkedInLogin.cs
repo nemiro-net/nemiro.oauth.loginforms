@@ -33,6 +33,8 @@ namespace Nemiro.OAuth.LoginForms
     public LinkedInLogin(LinkedInClient client) : base(client) 
     {
       this.Icon = Properties.Resources.linkedin;
+      this.Width = 642;
+      this.Height = 630;
     }
 
   }
