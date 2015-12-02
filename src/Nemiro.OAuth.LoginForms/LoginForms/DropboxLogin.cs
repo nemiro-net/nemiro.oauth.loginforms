@@ -47,10 +47,10 @@ namespace Nemiro.OAuth.LoginForms
       }
       else
       {
-        if (webBrowser.Document.GetElementById("auth-code") != null)
+        if (webBrowser.Document.GetElementById("auth-code-input") != null)
         {
           // found authorization code
-          base.GetAccessToken(webBrowser.Document.GetElementById("auth-code").InnerText);
+          base.GetAccessToken(webBrowser.Document.GetElementById("auth-code-input").GetAttribute("value"));
         }
       }
     }
