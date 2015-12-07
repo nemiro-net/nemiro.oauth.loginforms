@@ -9,6 +9,7 @@
 `PM> Install-Package Nemiro.OAuth.LoginForms`
 
 [Подробнее об установке](https://www.nuget.org/packages/Nemiro.OAuth.LoginForms/)
+
 [Использование диспетчера пакетов NuGet](http://docs.nuget.org/consume/package-manager-console)
 
 ### Системные требования
