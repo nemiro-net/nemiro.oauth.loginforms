@@ -26,11 +26,31 @@ namespace Nemiro.OAuth.LoginForms
   public class SoundCloudLogin : Login
   {
 
-    public SoundCloudLogin(string clientId, string clientSecret, string returnUrl) : this(clientId, clientSecret, returnUrl, null) { }
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The <b>Client ID</b> obtained from the <see href="http://soundcloud.com/you/apps">SoundCloud Applications</see>.</param>
+    /// <param name="clientSecret">The <b>Client Secret</b> obtained from the <see href="http://soundcloud.com/you/apps">SoundCloud Applications</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="returnUrl">The address to return.</param>
+    public SoundCloudLogin(string clientId, string clientSecret, string returnUrl, bool autoLogout = false) : this(clientId, clientSecret, returnUrl, null, autoLogout) { }
+    
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The <b>Client ID</b> obtained from the <see href="http://soundcloud.com/you/apps">SoundCloud Applications</see>.</param>
+    /// <param name="clientSecret">The <b>Client Secret</b> obtained from the <see href="http://soundcloud.com/you/apps">SoundCloud Applications</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="scope">The scope of the access request.</param>
+    /// <param name="returnUrl">The address to return.</param>
+    public SoundCloudLogin(string clientId, string clientSecret, string returnUrl, string scope, bool autoLogout = false) : this(new SoundCloudClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope }, autoLogout) { }
 
-    public SoundCloudLogin(string clientId, string clientSecret, string returnUrl, string scope) : this(new SoundCloudClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope }) { }
-
-    public SoundCloudLogin(SoundCloudClient client) : base(client) 
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified OAuth client.
+    /// </summary>
+    /// <param name="client">Instance of the OAuth client.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public SoundCloudLogin(SoundCloudClient client, bool autoLogout = false) : base(client, autoLogout) 
     {
       this.Width = 1000;
       this.Height = 700;

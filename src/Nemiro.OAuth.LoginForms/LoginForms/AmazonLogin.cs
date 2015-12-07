@@ -25,11 +25,31 @@ namespace Nemiro.OAuth.LoginForms
   public class AmazonLogin : Login, ILoginForm
   {
 
-    public AmazonLogin(string clientId, string clientSecret, string returnUrl) : this(clientId, clientSecret, returnUrl, null) { }
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The client ID obtained from the <see href="http://login.amazon.com/manageApps">App Console</see>.</param>
+    /// <param name="clientSecret">The client secret obtained from the <see href="http://login.amazon.com/manageApps">App Console</see>.</param>
+    /// <param name="returnUrl">The address to return.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public AmazonLogin(string clientId, string clientSecret, string returnUrl, bool autoLogout = false) : this(clientId, clientSecret, returnUrl, null, autoLogout) { }
+    
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The client ID obtained from the <see href="http://login.amazon.com/manageApps">App Console</see>.</param>
+    /// <param name="clientSecret">The client secret obtained from the <see href="http://login.amazon.com/manageApps">App Console</see>.</param>
+    /// <param name="scope">The scope of the access request.</param>
+    /// <param name="returnUrl">The address to return.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public AmazonLogin(string clientId, string clientSecret, string returnUrl, string scope, bool autoLogout = false) : this(new AmazonClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope }, autoLogout) { }
 
-    public AmazonLogin(string clientId, string clientSecret, string returnUrl, string scope) : this(new AmazonClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope }) { }
-
-    public AmazonLogin(AmazonClient client) : base(client) 
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified OAuth client.
+    /// </summary>
+    /// <param name="client">Instance of the OAuth client.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public AmazonLogin(AmazonClient client, bool autoLogout = false) : base(client, autoLogout) 
     {
       this.Width = 785;
       this.Height = 575;

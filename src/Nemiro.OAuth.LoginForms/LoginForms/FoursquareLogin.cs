@@ -25,12 +25,43 @@ namespace Nemiro.OAuth.LoginForms
 
   public class FoursquareLogin : Login
   {
-    
-    public FoursquareLogin(string clientId, string clientSecret, string returnUrl) : this(clientId, clientSecret, returnUrl, null) { }
 
-    public FoursquareLogin(string clientId, string clientSecret, string returnUrl, string scope) : this(new FoursquareClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope, Parameters = { { "display", "touch" } } }) { }
+    /// <summary>
+    /// Gets logout url.
+    /// </summary>
+    public string LogoutUrl
+    {
+      get
+      {
+        return "https://foursquare.com/logout";
+      }
+    }
 
-    public FoursquareLogin(FoursquareClient client) : base(client) 
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The <b>Client ID</b> obtained from the <see href="https://foursquare.com/oauth">Foursquare Apps</see>.</param>
+    /// <param name="clientSecret">The <b>Client Secret</b> obtained from the <see href="https://foursquare.com/oauth">Foursquare Apps</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="returnUrl">The address to return.</param>
+    public FoursquareLogin(string clientId, string clientSecret, string returnUrl, bool autoLogout = false) : this(clientId, clientSecret, returnUrl, null, autoLogout) { }
+
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The <b>Client ID</b> obtained from the <see href="https://foursquare.com/oauth">Foursquare Apps</see>.</param>
+    /// <param name="clientSecret">The <b>Client Secret</b> obtained from the <see href="https://foursquare.com/oauth">Foursquare Apps</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="scope">The scope of the access request.</param>
+    /// <param name="returnUrl">The address to return.</param>
+    public FoursquareLogin(string clientId, string clientSecret, string returnUrl, string scope, bool autoLogout = false) : this(new FoursquareClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope, Parameters = { { "display", "touch" } } }, autoLogout) { }
+
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified OAuth client.
+    /// </summary>
+    /// <param name="client">Instance of the OAuth client.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public FoursquareLogin(FoursquareClient client, bool autoLogout = false) : base(client, autoLogout) 
     {
       this.Height = 555;
       this.Icon = Properties.Resources.foursquare;

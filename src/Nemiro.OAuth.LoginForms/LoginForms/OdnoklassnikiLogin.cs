@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using Nemiro.OAuth.Clients;
 using System.Collections.Specialized;
+using System.Windows.Forms;
 
 namespace Nemiro.OAuth.LoginForms
 {
@@ -26,11 +27,33 @@ namespace Nemiro.OAuth.LoginForms
   public class OdnoklassnikiLogin : Login
   {
 
-    public OdnoklassnikiLogin(string clientId, string clientSecret, string publickKey, string returnUrl) : this(clientId, clientSecret, publickKey, returnUrl, null) { }
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The Client ID.</param>
+    /// <param name="clientSecret">The Client Secret.</param>
+    /// <param name="publickKey">The Public Key.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="returnUrl">The address to return.</param>
+    public OdnoklassnikiLogin(string clientId, string clientSecret, string publickKey, string returnUrl, bool autoLogout = false) : this(clientId, clientSecret, publickKey, returnUrl, null, autoLogout) { }
+    
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The Client ID.</param>
+    /// <param name="clientSecret">The Client Secret.</param>
+    /// <param name="publickKey">The Public Key.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="scope">The scope of the access request.</param>
+    /// <param name="returnUrl">The address to return.</param>
+    public OdnoklassnikiLogin(string clientId, string clientSecret, string publickKey, string returnUrl, string scope, bool autoLogout = false) : this(new OdnoklassnikiClient(clientId, clientSecret, publickKey) { ReturnUrl = returnUrl, Scope = scope }, autoLogout) { }
 
-    public OdnoklassnikiLogin(string clientId, string clientSecret, string publickKey, string returnUrl, string scope) : this(new OdnoklassnikiClient(clientId, clientSecret, publickKey) { ReturnUrl = returnUrl, Scope = scope }) { }
-
-    public OdnoklassnikiLogin(OdnoklassnikiClient client) : base(client) 
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified OAuth client.
+    /// </summary>
+    /// <param name="client">Instance of the OAuth client.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public OdnoklassnikiLogin(OdnoklassnikiClient client, bool autoLogout = false) : base(client, autoLogout) 
     {
       this.Icon = Properties.Resources.odnoklassniki;
     }

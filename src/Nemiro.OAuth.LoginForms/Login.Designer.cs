@@ -43,17 +43,13 @@ namespace Nemiro.OAuth.LoginForms
     /// </summary>
     private void InitializeComponent()
     {
+      this.components = new System.ComponentModel.Container();
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
-      this.webBrowser1 = new Nemiro.OAuth.LoginForms.WebBrowser();
       this.pictureBox1 = new System.Windows.Forms.PictureBox();
+      this.webBrowser1 = new Nemiro.OAuth.LoginForms.WebBrowser();
+      this.timer1 = new System.Windows.Forms.Timer(this.components);
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
       this.SuspendLayout();
-      // 
-      // webBrowser1
-      // 
-      resources.ApplyResources(this.webBrowser1, "webBrowser1");
-      this.webBrowser1.Name = "webBrowser1";
-      this.webBrowser1.ScriptErrorsSuppressed = true;
       // 
       // pictureBox1
       // 
@@ -61,17 +57,27 @@ namespace Nemiro.OAuth.LoginForms
       this.pictureBox1.Name = "pictureBox1";
       this.pictureBox1.TabStop = false;
       // 
+      // webBrowser1
+      // 
+      resources.ApplyResources(this.webBrowser1, "webBrowser1");
+      this.webBrowser1.Name = "webBrowser1";
+      this.webBrowser1.ScriptErrorsSuppressed = true;
+      // 
+      // timer1
+      // 
+      this.timer1.Interval = 10000;
+      this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+      // 
       // Login
       // 
       resources.ApplyResources(this, "$this");
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.BackColor = System.Drawing.Color.White;
-      this.Controls.Add(this.webBrowser1);
       this.Controls.Add(this.pictureBox1);
+      this.Controls.Add(this.webBrowser1);
       this.MaximizeBox = false;
       this.MinimizeBox = false;
       this.Name = "Login";
-      this.Load += new System.EventHandler(this.Login_Load);
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
       this.ResumeLayout(false);
 
@@ -81,5 +87,6 @@ namespace Nemiro.OAuth.LoginForms
 
     private Nemiro.OAuth.LoginForms.WebBrowser webBrowser1;
     private System.Windows.Forms.PictureBox pictureBox1;
+    private System.Windows.Forms.Timer timer1;
   }
 }

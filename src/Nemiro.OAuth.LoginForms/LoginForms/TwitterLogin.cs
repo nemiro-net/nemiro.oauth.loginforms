@@ -24,10 +24,21 @@ namespace Nemiro.OAuth.LoginForms
 
   public class TwitterLogin : Login, ILoginForm
   {
+    
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="consumerKey">The API Key obtained from the <see href="https://apps.twitter.com">Twitter Application Management</see>.</param>
+    /// <param name="consumerSecret">The API Secret obtained from the <see href="https://apps.twitter.com">Twitter Application Management</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public TwitterLogin(string consumerKey, string consumerSecret, bool autoLogout = false) : this(new TwitterClient(consumerKey, consumerSecret), autoLogout) { }
 
-    public TwitterLogin(string consumerKey, string consumerSecret) : this(new TwitterClient(consumerKey, consumerSecret)) { }
-
-    public TwitterLogin(TwitterClient client) : base(client) 
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified OAuth client.
+    /// </summary>
+    /// <param name="client">Instance of the OAuth client.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public TwitterLogin(TwitterClient client, bool autoLogout = false) : base(client, autoLogout) 
     {
       this.Width = 730;
       this.Height = 570;
@@ -49,6 +60,39 @@ namespace Nemiro.OAuth.LoginForms
           this.Close();
         }
       }
+    }
+
+    private bool IsLogout = false;
+
+    public override void Logout()
+    {
+      base.SetUrl
+      (
+        "https://twitter.com/",
+        (object sender, WebBrowserCallbackEventArgs e) =>
+        {
+          if (!this.IsLogout)
+          {
+            this.IsLogout = true;
+            var webBrowser = (WebBrowser)sender;
+            if (webBrowser.Document != null && webBrowser.Document.GetElementById("signout-form") != null)
+            {
+              webBrowser.Document.GetElementById("signout-form").InvokeMember("submit");
+              return;
+            }
+          }
+
+          // goto auth
+          if (this.CanLogin)
+          {
+            base.SetUrl(this.AuthorizationUrl);
+          }
+          else
+          {
+            base.GetAccessToken();
+          }
+        }
+      );
     }
 
   }

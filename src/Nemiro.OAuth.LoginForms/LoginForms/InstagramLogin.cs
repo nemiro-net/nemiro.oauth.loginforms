@@ -26,13 +26,55 @@ namespace Nemiro.OAuth.LoginForms
   public class InstagramLogin : Login
   {
 
-    public InstagramLogin(string clientId, string clientSecret, string returnUrl) : this(clientId, clientSecret, returnUrl, null) { }
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The <b>Client ID</b> obtained from the <see href="http://instagram.com/developer/clients/manage/">Instagram Manage Clients</see>.</param>
+    /// <param name="clientSecret">The <b>Client Secret</b> obtained from the <see href="http://instagram.com/developer/clients/manage/">Instagram Manage Clients</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="returnUrl">The address to return.</param>
+    public InstagramLogin(string clientId, string clientSecret, string returnUrl, bool autoLogout = false) : this(clientId, clientSecret, returnUrl, null, autoLogout) { }
 
-    public InstagramLogin(string clientId, string clientSecret, string returnUrl, string scope) : this(new InstagramClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope }) { }
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The <b>Client ID</b> obtained from the <see href="http://instagram.com/developer/clients/manage/">Instagram Manage Clients</see>.</param>
+    /// <param name="clientSecret">The <b>Client Secret</b> obtained from the <see href="http://instagram.com/developer/clients/manage/">Instagram Manage Clients</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="scope">The scope of the access request.</param>
+    /// <param name="returnUrl">The address to return.</param>
+    public InstagramLogin(string clientId, string clientSecret, string returnUrl, string scope, bool autoLogout = false) : this(new InstagramClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope }, autoLogout) { }
 
-    public InstagramLogin(InstagramClient client) : base(client) 
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified OAuth client.
+    /// </summary>
+    /// <param name="client">Instance of the OAuth client.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public InstagramLogin(InstagramClient client, bool autoLogout = false) : base(client, autoLogout) 
     {
       this.Icon = Properties.Resources.instagram;
+    }
+
+    public override void Logout()
+    {
+      base.SetUrl
+      (
+        "https://www.instagram.com/accounts/logout/",
+        (object sender, WebBrowserCallbackEventArgs e) =>
+        {
+          this.CanLogout = false;
+
+          // goto auth
+          if (this.CanLogin)
+          {
+            base.SetUrl(this.AuthorizationUrl);
+          }
+          else
+          {
+            base.GetAccessToken();
+          }
+        }
+      );
     }
 
   }

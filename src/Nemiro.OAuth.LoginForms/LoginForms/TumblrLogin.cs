@@ -25,10 +25,21 @@ namespace Nemiro.OAuth.LoginForms
 
   public class TumblrLogin : Login, ILoginForm
   {
+    
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="consumerKey">The <b>Consumer Key</b> obtained from the <see href="https://www.tumblr.com/oauth/apps">Tumblr Dashboard</see>.</param>
+    /// <param name="consumerSecret">The <b>Consumer Secret</b> obtained from the <see href="https://www.tumblr.com/oauth/apps">Tumblr Dashboard</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public TumblrLogin(string consumerKey, string consumerSecret, bool autoLogout = false) : this(new TumblrClient(consumerKey, consumerSecret), autoLogout) { }
 
-    public TumblrLogin(string consumerKey, string consumerSecret) : this(new TumblrClient(consumerKey, consumerSecret)) { }
-
-    public TumblrLogin(TumblrClient client) : base(client) 
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified OAuth client.
+    /// </summary>
+    /// <param name="client">Instance of the OAuth client.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public TumblrLogin(TumblrClient client, bool autoLogout = false) : base(client, autoLogout) 
     {
       this.Width = 845;
       this.Height = 540;
@@ -45,6 +56,26 @@ namespace Nemiro.OAuth.LoginForms
           this.Close();
         };
       }
+    }
+
+    public override void Logout()
+    {
+      base.SetUrl
+      (
+        "https://www.tumblr.com/logout",
+        (object sender, WebBrowserCallbackEventArgs e) =>
+        {
+          // goto auth
+          if (this.CanLogin)
+          {
+            base.SetUrl(this.AuthorizationUrl);
+          }
+          else
+          {
+            base.GetAccessToken();
+          }
+        }
+      );
     }
 
   }

@@ -32,11 +32,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Release\Nemiro.OAuth.LoginForms.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Nemiro.OAuth, Version=1.10.4.895, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Nemiro.OAuth.1.10\lib\net40\Nemiro.OAuth.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -116,9 +117,11 @@
     <Compile Include="LoginForms\TwitterLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WebBrowser.cs">
+    <Compile Include="WebBrowser\WebBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="WebBrowser\WebBrowserCallback.cs" />
+    <Compile Include="WebBrowser\WebBrowserCallbackEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Login.ar.resx">
@@ -253,6 +256,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Graph1.dgml" />
     <None Include="LICENSE" />
     <None Include="packages.config" />
     <None Include="Resources\loader.gif" />
@@ -322,6 +326,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\codeproject.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loader2.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

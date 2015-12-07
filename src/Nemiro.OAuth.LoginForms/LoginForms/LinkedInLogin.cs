@@ -26,11 +26,31 @@ namespace Nemiro.OAuth.LoginForms
   public class LinkedInLogin : Login
   {
 
-    public LinkedInLogin(string clientId, string clientSecret, string returnUrl) : this(clientId, clientSecret, returnUrl, null) { }
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The <b>Api Key</b> obtained from the <see href="https://www.linkedin.com/secure/developer">LinkedIn Dashboard</see>.</param>
+    /// <param name="clientSecret">The <b>Secret Key</b> obtained from the <see href="https://www.linkedin.com/secure/developer">LinkedIn Dashboard</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="returnUrl">The address to return.</param>
+    public LinkedInLogin(string clientId, string clientSecret, string returnUrl, bool autoLogout = false) : this(clientId, clientSecret, returnUrl, null, autoLogout) { }
+    
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The <b>Api Key</b> obtained from the <see href="https://www.linkedin.com/secure/developer">LinkedIn Dashboard</see>.</param>
+    /// <param name="clientSecret">The <b>Secret Key</b> obtained from the <see href="https://www.linkedin.com/secure/developer">LinkedIn Dashboard</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="scope">The scope of the access request.</param>
+    /// <param name="returnUrl">The address to return.</param>
+    public LinkedInLogin(string clientId, string clientSecret, string returnUrl, string scope, bool autoLogout = false) : this(new LinkedInClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope }, autoLogout) { }
 
-    public LinkedInLogin(string clientId, string clientSecret, string returnUrl, string scope) : this(new LinkedInClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope }) { }
-
-    public LinkedInLogin(LinkedInClient client) : base(client) 
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified OAuth client.
+    /// </summary>
+    /// <param name="client">Instance of the OAuth client.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public LinkedInLogin(LinkedInClient client, bool autoLogout = false) : base(client, autoLogout) 
     {
       this.Icon = Properties.Resources.linkedin;
       this.Width = 642;

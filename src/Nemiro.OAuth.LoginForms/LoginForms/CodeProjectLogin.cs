@@ -26,9 +26,21 @@ namespace Nemiro.OAuth.LoginForms
   public class CodeProjectLogin : Login //, ILoginForm
   {
 
-    public CodeProjectLogin(string clientId, string clientSecret, string returnUrl) : this(new CodeProjectClient(clientId, clientSecret) { ReturnUrl = returnUrl }) { }
-
-    public CodeProjectLogin(CodeProjectClient client) : base(client) 
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The Client ID obtained from the <see href="https://www.codeproject.com/script/webapi/userclientregistrations.aspx">CodeProject Web API Clients</see>.</param>
+    /// <param name="clientSecret">The Client Secret obtained from the <see href="https://www.codeproject.com/script/webapi/userclientregistrations.aspx">CodeProject Web API Clients</see>.</param>
+    /// <param name="returnUrl">The address to return.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public CodeProjectLogin(string clientId, string clientSecret, string returnUrl, bool autoLogout = false) : this(new CodeProjectClient(clientId, clientSecret) { ReturnUrl = returnUrl }, autoLogout) { }
+    
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified OAuth client.
+    /// </summary>
+    /// <param name="client">Instance of the OAuth client.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public CodeProjectLogin(CodeProjectClient client, bool autoLogout = false) : base(client, autoLogout) 
     {
       this.Icon = Properties.Resources.codeproject;
       this.Width = 720;

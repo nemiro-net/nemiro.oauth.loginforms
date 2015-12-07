@@ -26,11 +26,31 @@ namespace Nemiro.OAuth.LoginForms
   public class LiveLogin : Login, ILoginForm
   {
 
-    public LiveLogin(string clientId, string clientSecret, string returnUrl) : this(clientId, clientSecret, returnUrl, null) { }
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The Client ID obtained from the <see href="https://account.live.com/developers/applications/index">Live Connect App Management</see>.</param>
+    /// <param name="clientSecret">The Client Secret obtained from the <see href="https://account.live.com/developers/applications/index">Live Connect App Management</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="returnUrl">The address to return.</param>
+    public LiveLogin(string clientId, string clientSecret, string returnUrl, bool autoLogout = false) : this(clientId, clientSecret, returnUrl, null, autoLogout) { }
 
-    public LiveLogin(string clientId, string clientSecret, string returnUrl, string scope) : this(new LiveClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope }) { }
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The Client ID obtained from the <see href="https://account.live.com/developers/applications/index">Live Connect App Management</see>.</param>
+    /// <param name="clientSecret">The Client Secret obtained from the <see href="https://account.live.com/developers/applications/index">Live Connect App Management</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="scope">The scope of the access request.</param>
+    /// <param name="returnUrl">The address to return.</param>
+    public LiveLogin(string clientId, string clientSecret, string returnUrl, string scope, bool autoLogout = false) : this(new LiveClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope }, autoLogout) { }
 
-    public LiveLogin(LiveClient client) : base(client) 
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified OAuth client.
+    /// </summary>
+    /// <param name="client">Instance of the OAuth client.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public LiveLogin(LiveClient client, bool autoLogout = false) : base(client, autoLogout) 
     {
       this.Width = 700;
       this.Height = 650;
@@ -47,6 +67,26 @@ namespace Nemiro.OAuth.LoginForms
           this.Close();
         };
       }
+    }
+
+    public override void Logout()
+    {
+      base.SetUrl
+      (
+        "https://login.live.com/logout.srf",
+        (object sender, WebBrowserCallbackEventArgs e) =>
+        {
+          // goto auth
+          if (this.CanLogin)
+          {
+            base.SetUrl(this.AuthorizationUrl);
+          }
+          else
+          {
+            base.GetAccessToken();
+          }
+        }
+      );
     }
 
   }

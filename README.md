@@ -12,8 +12,8 @@ To install **Nemiro.OAuth.LoginForms**, run the following command in the **Packa
 
 ### System Requirements
 
-* [Nemiro.OAuth](https://github.com/alekseynemiro/nemiro.oauth.dll) v1.7 or later;
-* Microsoft Windows XP, 7 or later with .NET Framework 4.0 or 4.5 or later;
+* [Nemiro.OAuth](https://github.com/alekseynemiro/nemiro.oauth.dll) v1.10 or later;
+* Microsoft Windows XP, 7 or later with .NET Framework 3.5 or later;
 * Microsoft Visual Studio 2010 (recommended Professional Edition with Service Pack 1) or later.
 
 ### How to use
@@ -49,6 +49,17 @@ If login.IsSuccessfully Then
   MessageBox.Show(login.AccessToken.Value)
 End If
 ```
+
+### Localization
+
+Use the resources localization for different languages.
+
+For example: 
+* /ru/Nemiro.OAuth.LoginForms.resources.dll
+* /de/Nemiro.OAuth.LoginForms.resources.dll
+* Nemiro.OAuth.LoginForms.dll
+
+This example will use the English (default), Russian and German.
 
 ### See Also
 

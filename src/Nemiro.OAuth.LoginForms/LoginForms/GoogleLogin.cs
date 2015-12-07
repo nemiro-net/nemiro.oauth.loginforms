@@ -26,11 +26,29 @@ namespace Nemiro.OAuth.LoginForms
   public class GoogleLogin : Login, ILoginForm
   {
 
-    public GoogleLogin(string clientId, string clientSecret) : this(clientId, clientSecret, null) { }
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The Client ID obtained from the <see href="https://console.developers.google.com/">Google Developers Console</see>.</param>
+    /// <param name="clientSecret">The Client Secret obtained from the <see href="https://console.developers.google.com/">Google Developers Console</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public GoogleLogin(string clientId, string clientSecret, bool autoLogout = false) : this(clientId, clientSecret, null, autoLogout) { }
+    
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The Client ID obtained from the <see href="https://console.developers.google.com/">Google Developers Console</see>.</param>
+    /// <param name="clientSecret">The Client Secret obtained from the <see href="https://console.developers.google.com/">Google Developers Console</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="scope">The scope of the access request.</param>
+    public GoogleLogin(string clientId, string clientSecret, string scope, bool autoLogout = false) : this(new GoogleClient(clientId, clientSecret) { Scope = scope }, autoLogout) { }
 
-    public GoogleLogin(string clientId, string clientSecret, string scope) : this(new GoogleClient(clientId, clientSecret) { Scope = scope }) { }
-
-    public GoogleLogin(GoogleClient client) : base(client) 
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified OAuth client.
+    /// </summary>
+    /// <param name="client">Instance of the OAuth client.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public GoogleLogin(GoogleClient client, bool autoLogout = false) : base(client, autoLogout) 
     {
       this.Width = 710;
       this.Height = 560;

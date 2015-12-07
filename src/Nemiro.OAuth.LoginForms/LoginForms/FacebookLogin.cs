@@ -26,13 +26,57 @@ namespace Nemiro.OAuth.LoginForms
   public class FacebookLogin : Login
   {
 
-    public FacebookLogin(string clientId, string clientSecret) : this(clientId, clientSecret, null) { }
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The App ID obtained from the <see href="https://developers.facebook.com/apps/">Facebook Developers</see>.</param>
+    /// <param name="clientSecret">The App Secret obtained from the <see href="https://developers.facebook.com/apps/">Facebook Developers</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public FacebookLogin(string clientId, string clientSecret, bool autoLogout = false) : this(clientId, clientSecret, null, autoLogout) { }
 
-    public FacebookLogin(string clientId, string clientSecret, string scope) : this(new FacebookClient(clientId, clientSecret) { Scope = scope, Parameters = new NameValueCollection { { "display", "popup" } } }) { }
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The App ID obtained from the <see href="https://developers.facebook.com/apps/">Facebook Developers</see>.</param>
+    /// <param name="clientSecret">The App Secret obtained from the <see href="https://developers.facebook.com/apps/">Facebook Developers</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="scope">The scope of the access request.</param>
+    public FacebookLogin(string clientId, string clientSecret, string scope, bool autoLogout = false) : this(new FacebookClient(clientId, clientSecret) { Scope = scope, Parameters = new NameValueCollection { { "display", "popup" } } }, autoLogout) { }
 
-    public FacebookLogin(FacebookClient client) : base(client) 
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified OAuth client.
+    /// </summary>
+    /// <param name="client">Instance of the OAuth client.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    public FacebookLogin(FacebookClient client, bool autoLogout = false) : base(client, autoLogout) 
     { 
       this.Icon = Properties.Resources.facebook;
+    }
+
+    public void WebDocumentLoaded(System.Windows.Forms.WebBrowser webBrowser, Uri url)
+    {
+      this.Close();
+    }
+    
+    public override void Logout()
+    {
+      base.SetUrl
+      (
+        "https://www.facebook.com/logout.php",
+        (object sender, WebBrowserCallbackEventArgs e) =>
+        {
+          base.KillCookies();
+          // goto auth
+          if (this.CanLogin)
+          {
+            base.SetUrl(this.AuthorizationUrl);
+          }
+          else
+          {
+            base.GetAccessToken();
+          }
+        }
+      );
     }
 
   }
