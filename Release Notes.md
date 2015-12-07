@@ -2,6 +2,11 @@
 
 This document summarizes the changes in recent releases.
 
+#### v1.4 (December 7, 2015)
+
+* Fixed Dropbox;
+* Logout implemented.
+
 #### v1.3 (June 25, 2015)
 
 * Support for .NET 3.5;
