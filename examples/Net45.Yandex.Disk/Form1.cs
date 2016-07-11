@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// Copyright (c) Aleksey Nemiro, 2015. All rights reserved.
+// Copyright © Aleksey Nemiro, 2015-2016. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ namespace Yandex.Disk.Net45
   {
 
     private bool AlwaysNewToken = true;
-
+    private long CurrentFileLength = 0;
     private string CurrentPath = "/";
     private HttpAuthorization Authorization = null;
 
@@ -231,10 +231,12 @@ namespace Yandex.Disk.Net45
     private void button2_Click(object sender, EventArgs e)
     {
       if (openFileDialog1.ShowDialog() != System.Windows.Forms.DialogResult.OK) { return; }
-
-      this.Cursor = Cursors.WaitCursor;
-      
+            
       var fileStream = openFileDialog1.OpenFile();
+
+      this.progressBar1.Value = 0;
+      this.CurrentFileLength = fileStream.Length;
+      this.Cursor = Cursors.WaitCursor;
 
       OAuthUtility.GetAsync
       (
@@ -252,7 +254,10 @@ namespace Yandex.Disk.Net45
             (
               result["href"].ToString(),
               new HttpParameterCollection { {fileStream} },
-              callback: Upload_Result
+              // handler of result
+              callback: Upload_Result,
+              // handler of uploading
+              streamWriteCallback: Upload_Processing
             );
           }
           else
@@ -261,6 +266,17 @@ namespace Yandex.Disk.Net45
           }
         }
       );
+    }
+
+    private void Upload_Processing(object sender, StreamWriteEventArgs e)
+    {
+      if (this.InvokeRequired)
+      {
+        this.Invoke(new Action<object, StreamWriteEventArgs>(this.Upload_Processing), sender, e);
+        return;
+      }
+
+      progressBar1.Value = Math.Min(Convert.ToInt32(Math.Round((e.TotalBytesWritten * 100.0) / this.CurrentFileLength)), 100);
     }
 
     private void Upload_Result(RequestResult result)

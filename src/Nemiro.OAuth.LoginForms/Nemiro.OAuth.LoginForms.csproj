@@ -34,9 +34,15 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Release\Nemiro.OAuth.LoginForms.XML</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Nemiro.OAuth.LoginForms.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nemiro.OAuth, Version=1.10.4.895, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Nemiro.OAuth.1.10\lib\net40\Nemiro.OAuth.dll</HintPath>
+    <Reference Include="Nemiro.OAuth, Version=1.11.4.2421, Culture=neutral, PublicKeyToken=cb06320e362d440b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nemiro.OAuth.1.11\lib\net40\Nemiro.OAuth.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -258,6 +264,7 @@
   <ItemGroup>
     <None Include="Graph1.dgml" />
     <None Include="LICENSE" />
+    <None Include="Nemiro.OAuth.LoginForms.snk" />
     <None Include="packages.config" />
     <None Include="Resources\loader.gif" />
   </ItemGroup>
@@ -265,12 +272,10 @@
     <None Include="Resources\aleksey.nemiro.gif" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Media Kit.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\dropbox.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\mediakit.md" />
     <None Include="Resources\twitter.ico" />
   </ItemGroup>
   <ItemGroup>

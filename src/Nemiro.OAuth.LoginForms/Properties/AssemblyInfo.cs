@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// Copyright (c) Aleksey Nemiro, 2015. All rights reserved.
+// Copyright © Aleksey Nemiro, 2015. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Aleksey Nemiro")]
 [assembly: AssemblyProduct("Nemiro.OAuth.LoginForm")]
-[assembly: AssemblyCopyright("Copyright © Aleksey Nemiro, 2015")]
+[assembly: AssemblyCopyright("Copyright © Aleksey Nemiro, 2015-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -47,5 +47,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номер построения и номер редакции по умолчанию, 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.4.4.1485")]
-[assembly: AssemblyFileVersion("1.4.4.1485")]
+[assembly: AssemblyVersion("1.4.4.2423")]
+[assembly: AssemblyFileVersion("1.4.4.2423")]

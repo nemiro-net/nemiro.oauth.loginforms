@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// Copyright (c) Aleksey Nemiro, 2015. All rights reserved.
+// Copyright © Aleksey Nemiro, 2015. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,11 +14,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Nemiro.OAuth.Clients;
-using System.Collections.Specialized;
 using System.Windows.Forms;
 
 namespace Nemiro.OAuth.LoginForms

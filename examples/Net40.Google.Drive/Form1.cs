@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// Copyright (c) Aleksey Nemiro, 2015. All rights reserved.
+// Copyright © Aleksey Nemiro, 2015-2016. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,8 +31,10 @@ namespace Google.Drive.Net40
 
   public partial class Form1 : Form
   {
+
     private string LastFolderId = null;
     private string CurrentFolderId = null;
+    private long CurrentFileLength = 0;
 
     public Form1()
     {
@@ -235,6 +237,8 @@ namespace Google.Drive.Net40
 
     private void button2_Click(object sender, EventArgs e)
     {
+      progressBar1.Value = 0;
+
       if (openFileDialog1.ShowDialog() != System.Windows.Forms.DialogResult.OK) { return; }
 
       object parents = null;
@@ -253,10 +257,13 @@ namespace Google.Drive.Net40
         }
       );
 
+      var file = openFileDialog1.OpenFile();
+      this.CurrentFileLength = file.Length;
+
       var parameters = new HttpParameterCollection();
       parameters.Add("uploadType", "multipart");
       parameters.AddContent("application/json", properties.ToString());
-      parameters.AddContent("application/octet-stream", openFileDialog1.OpenFile());
+      parameters.AddContent("application/octet-stream", file);
 
       OAuthUtility.PostAsync
       (
@@ -264,8 +271,22 @@ namespace Google.Drive.Net40
         parameters,
         authorization: new HttpAuthorization(AuthorizationType.Bearer, Properties.Settings.Default.AccessToken),
         contentType: "multipart/related",
-        callback: Upload_Result
+        // handler of result
+        callback: Upload_Result,
+        // handler of uploading
+        streamWriteCallback: Upload_Processing
       );
+    }
+
+    private void Upload_Processing(object sender, StreamWriteEventArgs e)
+    {
+      if (this.InvokeRequired)
+      {
+        this.Invoke(new Action<object, StreamWriteEventArgs>(this.Upload_Processing), sender, e);
+        return;
+      }
+
+      progressBar1.Value = Math.Min(Convert.ToInt32(Math.Round((e.TotalBytesWritten * 100.0) / this.CurrentFileLength)), 100);
     }
 
     private void Upload_Result(RequestResult result)
