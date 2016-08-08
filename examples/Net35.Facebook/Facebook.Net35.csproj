@@ -33,12 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nemiro.OAuth, Version=1.11.35.2421, Culture=neutral, PublicKeyToken=cb06320e362d440b, processorArchitecture=MSIL">
-      <HintPath>packages\Nemiro.OAuth.1.11\lib\net35\Nemiro.OAuth.dll</HintPath>
+    <Reference Include="Nemiro.OAuth, Version=1.11.35.2477, Culture=neutral, PublicKeyToken=cb06320e362d440b, processorArchitecture=MSIL">
+      <HintPath>packages\Nemiro.OAuth.1.11.2477\lib\net35\Nemiro.OAuth.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Nemiro.OAuth.LoginForms, Version=1.4.35.2423, Culture=neutral, PublicKeyToken=2656cfe28099e3f4, processorArchitecture=MSIL">
-      <HintPath>packages\Nemiro.OAuth.LoginForms.1.4.2423\lib\net35\Nemiro.OAuth.LoginForms.dll</HintPath>
+    <Reference Include="Nemiro.OAuth.LoginForms, Version=1.4.35.2483, Culture=neutral, PublicKeyToken=2656cfe28099e3f4, processorArchitecture=MSIL">
+      <HintPath>packages\Nemiro.OAuth.LoginForms.1.4.2483\lib\net35\Nemiro.OAuth.LoginForms.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

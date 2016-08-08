@@ -2,6 +2,11 @@
 
 All notable changes to **Nemiro.OAuth.LoginForms** will be documented in this file.
 
+## [v1.4.2483] - 2016-08-08
+
+### Changed
+* Updated references to [Nemiro.OAuth](https://github.com/alekseynemiro/nemiro.oauth.dll).
+
 ## [v1.4.2423] - 2016-07-11
 
 ### Added
