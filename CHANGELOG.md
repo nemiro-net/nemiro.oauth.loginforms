@@ -2,6 +2,15 @@
 
 All notable changes to **Nemiro.OAuth.LoginForms** will be documented in this file.
 
+## [v1.5] - 2016-09-12
+
+### Added
+* Added ability to get detailed information about users.
+
+### Changed
+* Changed modifier of the `Client` property. Now it is a public property;
+* Updated references to [Nemiro.OAuth](https://github.com/alekseynemiro/nemiro.oauth.dll).
+
 ## [v1.4.2483] - 2016-08-08
 
 ### Changed

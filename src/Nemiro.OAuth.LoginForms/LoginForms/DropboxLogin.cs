@@ -19,6 +19,9 @@ using Nemiro.OAuth.Clients;
 namespace Nemiro.OAuth.LoginForms
 {
 
+  /// <summary>
+  /// Represents login form for Dropbox.
+  /// </summary>
   public class DropboxLogin : Login, ILoginForm
   {
 
@@ -28,7 +31,8 @@ namespace Nemiro.OAuth.LoginForms
     /// <param name="clientId">The <b>App key</b> obtained from the <see href="https://www.dropbox.com/developers/apps">Dropbox App Console</see>.</param>
     /// <param name="clientSecret">The <b>App secret</b> obtained from the <see href="https://www.dropbox.com/developers/apps">Dropbox App Console</see>.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
-    public DropboxLogin(string clientId, string clientSecret, bool autoLogout = false) : this(clientId, clientSecret, null, autoLogout) { }
+    /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
+    public DropboxLogin(string clientId, string clientSecret, bool autoLogout = false, bool loadUserInfo = false) : this(clientId, clientSecret, null, autoLogout, loadUserInfo) { }
 
     /// <summary>
     /// Initializes a new instance of the login form with a specified parameters.
@@ -37,14 +41,16 @@ namespace Nemiro.OAuth.LoginForms
     /// <param name="clientSecret">The <b>App secret</b> obtained from the <see href="https://www.dropbox.com/developers/apps">Dropbox App Console</see>.</param>
     /// <param name="scope">The access scope.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
-    public DropboxLogin(string clientId, string clientSecret, string scope, bool autoLogout = false) : this(new DropboxClient(clientId, clientSecret) { Scope = scope }, autoLogout) { }
+    /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
+    public DropboxLogin(string clientId, string clientSecret, string scope, bool autoLogout = false, bool loadUserInfo = false) : this(new DropboxClient(clientId, clientSecret) { Scope = scope }, autoLogout, loadUserInfo) { }
 
     /// <summary>
     /// Initializes a new instance of the login form with a specified OAuth client.
     /// </summary>
     /// <param name="client">Instance of the OAuth client.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
-    public DropboxLogin(DropboxClient client, bool autoLogout = false) : base(client, autoLogout) 
+    /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
+    public DropboxLogin(DropboxClient client, bool autoLogout = false, bool loadUserInfo = false) : base(client, autoLogout, loadUserInfo) 
     {
       this.Width = 695;
       this.Height = 515;

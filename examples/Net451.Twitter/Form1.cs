@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// Copyright © Aleksey Nemiro, 2015. All rights reserved.
+// Copyright © Aleksey Nemiro, 2015-2016. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,13 +14,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Nemiro.OAuth;
 using Nemiro.OAuth.LoginForms;
@@ -55,7 +49,8 @@ namespace Twitter.Net451
 
     private void GetAccessToken()
     {
-      var login = new TwitterLogin(this.ConsumerKey, this.ConsumerSecret);
+      var login = new TwitterLogin(this.ConsumerKey, this.ConsumerSecret, loadUserInfo: true);
+
       login.Owner = this;
       login.ShowDialog();
 
@@ -64,6 +59,9 @@ namespace Twitter.Net451
         Properties.Settings.Default.AccessToken = login.AccessTokenValue;
         Properties.Settings.Default.TokenSecret = ((OAuthAccessToken)login.AccessToken).TokenSecret;
         Properties.Settings.Default.Save();
+
+        this.Text = login.UserInfo.DisplayName ?? login.UserInfo.UserName;
+
         this.GetTweets();
       }
       else
@@ -120,7 +118,14 @@ namespace Twitter.Net451
       }
       else
       {
-        MessageBox.Show(result.ToString());
+        string errorMessage = result.ToString();
+
+        if (result["errors"].HasValue)
+        {
+          errorMessage = String.Join("\r\n", result["errors"].Select(itm => itm["message"].ToString()));
+        }
+
+        MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
       }
     }
 
@@ -139,7 +144,6 @@ namespace Twitter.Net451
       auth.TokenSecret = Properties.Settings.Default.TokenSecret;
       return auth;
     }
-
 
   }
 

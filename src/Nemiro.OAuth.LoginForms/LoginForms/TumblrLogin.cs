@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// Copyright © Aleksey Nemiro, 2015. All rights reserved.
+// Copyright © Aleksey Nemiro, 2015-2016. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,23 +19,28 @@ using Nemiro.OAuth.Clients;
 namespace Nemiro.OAuth.LoginForms
 {
 
+  /// <summary>
+  /// Represents login form for Tumblr.
+  /// </summary>
   public class TumblrLogin : Login, ILoginForm
   {
-    
+
     /// <summary>
     /// Initializes a new instance of the login form with a specified parameters.
     /// </summary>
     /// <param name="consumerKey">The <b>Consumer Key</b> obtained from the <see href="https://www.tumblr.com/oauth/apps">Tumblr Dashboard</see>.</param>
     /// <param name="consumerSecret">The <b>Consumer Secret</b> obtained from the <see href="https://www.tumblr.com/oauth/apps">Tumblr Dashboard</see>.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
-    public TumblrLogin(string consumerKey, string consumerSecret, bool autoLogout = false) : this(new TumblrClient(consumerKey, consumerSecret), autoLogout) { }
+    /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
+    public TumblrLogin(string consumerKey, string consumerSecret, bool autoLogout = false, bool loadUserInfo = false) : this(new TumblrClient(consumerKey, consumerSecret), autoLogout, loadUserInfo) { }
 
     /// <summary>
     /// Initializes a new instance of the login form with a specified OAuth client.
     /// </summary>
     /// <param name="client">Instance of the OAuth client.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
-    public TumblrLogin(TumblrClient client, bool autoLogout = false) : base(client, autoLogout) 
+    /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
+    public TumblrLogin(TumblrClient client, bool autoLogout = false, bool loadUserInfo = false) : base(client, autoLogout, loadUserInfo) 
     {
       this.Width = 845;
       this.Height = 540;

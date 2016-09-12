@@ -14,11 +14,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Nemiro.OAuth.LoginForms;
@@ -55,7 +50,7 @@ namespace Google.Drive.Net40
 
     private void GetAccessToken()
     {
-      var login = new GoogleLogin("934704666049-129jsvmelksmcmf250ir90aqn8pk4nak.apps.googleusercontent.com", "OS7HZ1cfJnhdIFZ6fUsgamH-", "https://www.googleapis.com/auth/drive");
+      var login = new GoogleLogin("934704666049-129jsvmelksmcmf250ir90aqn8pk4nak.apps.googleusercontent.com", "OS7HZ1cfJnhdIFZ6fUsgamH-", "https://www.googleapis.com/auth/drive", loadUserInfo: true);
       login.Owner = this;
       login.ShowDialog();
 
@@ -63,6 +58,9 @@ namespace Google.Drive.Net40
       {
         Properties.Settings.Default.AccessToken = login.AccessToken.Value;
         Properties.Settings.Default.Save();
+
+        this.Text = String.Format("{0} (Google Drive)", login.UserInfo.DisplayName ?? login.UserInfo.UserName);
+
         this.GetFiles();
       }
       else
@@ -131,7 +129,21 @@ namespace Google.Drive.Net40
       }
       else
       {
-        MessageBox.Show(result.ToString());
+        if (result["error"]["errors"].Count > 0)
+        {
+          if (result["error"]["errors"][0]["reason"].Equals("authError", StringComparison.OrdinalIgnoreCase))
+          {
+            this.GetAccessToken();
+          }
+          else
+          {
+            MessageBox.Show(result["error"]["errors"][0]["message"].ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          }
+        }
+        else
+        {
+          MessageBox.Show(result.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
       }
     }
 

@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// Copyright © Aleksey Nemiro, 2015. All rights reserved.
+// Copyright © Aleksey Nemiro, 2015-2016. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,9 @@ using Nemiro.OAuth.Clients;
 namespace Nemiro.OAuth.LoginForms
 {
 
+  /// <summary>
+  /// Represents login form for Google.
+  /// </summary>
   public class GoogleLogin : Login, ILoginForm
   {
 
@@ -28,8 +31,9 @@ namespace Nemiro.OAuth.LoginForms
     /// <param name="clientId">The Client ID obtained from the <see href="https://console.developers.google.com/">Google Developers Console</see>.</param>
     /// <param name="clientSecret">The Client Secret obtained from the <see href="https://console.developers.google.com/">Google Developers Console</see>.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
-    public GoogleLogin(string clientId, string clientSecret, bool autoLogout = false) : this(clientId, clientSecret, null, autoLogout) { }
-    
+    /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
+    public GoogleLogin(string clientId, string clientSecret, bool autoLogout = false, bool loadUserInfo = false) : this(clientId, clientSecret, null, autoLogout, loadUserInfo) { }
+
     /// <summary>
     /// Initializes a new instance of the login form with a specified parameters.
     /// </summary>
@@ -37,14 +41,16 @@ namespace Nemiro.OAuth.LoginForms
     /// <param name="clientSecret">The Client Secret obtained from the <see href="https://console.developers.google.com/">Google Developers Console</see>.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
     /// <param name="scope">The scope of the access request.</param>
-    public GoogleLogin(string clientId, string clientSecret, string scope, bool autoLogout = false) : this(new GoogleClient(clientId, clientSecret) { Scope = scope }, autoLogout) { }
+    /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
+    public GoogleLogin(string clientId, string clientSecret, string scope, bool autoLogout = false, bool loadUserInfo = false) : this(new GoogleClient(clientId, clientSecret) { Scope = scope }, autoLogout, loadUserInfo) { }
 
     /// <summary>
     /// Initializes a new instance of the login form with a specified OAuth client.
     /// </summary>
     /// <param name="client">Instance of the OAuth client.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
-    public GoogleLogin(GoogleClient client, bool autoLogout = false) : base(client, autoLogout) 
+    /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
+    public GoogleLogin(GoogleClient client, bool autoLogout = false, bool loadUserInfo = false) : base(client, autoLogout, loadUserInfo) 
     {
       this.Width = 710;
       this.Height = 560;

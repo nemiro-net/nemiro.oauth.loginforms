@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// Copyright © Aleksey Nemiro, 2015. All rights reserved.
+// Copyright © Aleksey Nemiro, 2015-2016. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@ using Nemiro.OAuth.Clients;
 namespace Nemiro.OAuth.LoginForms
 {
 
+  /// <summary>
+  /// Represents login form for CodeProject.
+  /// </summary>
   public class CodeProjectLogin : Login //, ILoginForm
   {
 
@@ -28,14 +31,16 @@ namespace Nemiro.OAuth.LoginForms
     /// <param name="clientSecret">The Client Secret obtained from the <see href="https://www.codeproject.com/script/webapi/userclientregistrations.aspx">CodeProject Web API Clients</see>.</param>
     /// <param name="returnUrl">The address to return.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
-    public CodeProjectLogin(string clientId, string clientSecret, string returnUrl, bool autoLogout = false) : this(new CodeProjectClient(clientId, clientSecret) { ReturnUrl = returnUrl }, autoLogout) { }
-    
+    /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
+    public CodeProjectLogin(string clientId, string clientSecret, string returnUrl, bool autoLogout = false, bool loadUserInfo = false) : this(new CodeProjectClient(clientId, clientSecret) { ReturnUrl = returnUrl }, autoLogout, loadUserInfo) { }
+
     /// <summary>
     /// Initializes a new instance of the login form with a specified OAuth client.
     /// </summary>
     /// <param name="client">Instance of the OAuth client.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
-    public CodeProjectLogin(CodeProjectClient client, bool autoLogout = false) : base(client, autoLogout) 
+    /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
+    public CodeProjectLogin(CodeProjectClient client, bool autoLogout = false, bool loadUserInfo = false) : base(client, autoLogout, loadUserInfo) 
     {
       this.Icon = Properties.Resources.codeproject;
       this.Width = 720;

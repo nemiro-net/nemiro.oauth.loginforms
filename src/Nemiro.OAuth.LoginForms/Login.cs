@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// Copyright © Aleksey Nemiro, 2015. All rights reserved.
+// Copyright © Aleksey Nemiro, 2015-2016. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,18 +25,26 @@ using System.Diagnostics;
 namespace Nemiro.OAuth.LoginForms
 {
 
+  /// <summary>
+  /// The base class for the authorization forms.
+  /// </summary>
   public partial class Login : Form
   {
 
     /// <summary>
     /// An instance of the OAuth client.
     /// </summary>
-    protected OAuthBase Client { get; set; }
+    public OAuthBase Client { get; protected set; }
 
     /// <summary>
     /// Gets a value indicating whether the current authorization result is successful or not.
     /// </summary>
     public bool IsSuccessfully { get; protected set; }
+
+    /// <summary>
+    /// Gets user profile.
+    /// </summary>
+    public UserInfo UserInfo { get; protected set; }
 
     /// <summary>
     /// Gets an instance of the access token.
@@ -114,6 +122,11 @@ namespace Nemiro.OAuth.LoginForms
     /// </summary>
     private bool AutoLogout { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value that indicates the need to load user profile information.
+    /// </summary>
+    private bool LoadUserInfo { get; set; }
+
     private WebBrowserCallback Callback = null;
 
     private bool AccessTokenProcessing = false;
@@ -121,7 +134,7 @@ namespace Nemiro.OAuth.LoginForms
     private bool Timeout = false;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Login"/> class.
+    /// Initializes a new instance of the <see cref="Login"/>.
     /// </summary>
     protected Login()
     {
@@ -135,11 +148,12 @@ namespace Nemiro.OAuth.LoginForms
     /// </summary>
     /// <param name="client">Instance of the OAuth client.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
-    public Login(OAuthBase client, bool autoLogout = false)
-      : this()
+    /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
+    public Login(OAuthBase client, bool autoLogout = false, bool loadUserInfo = false) : this()
     {
       this.Client = client;
       this.AutoLogout = autoLogout;
+      this.LoadUserInfo = loadUserInfo;
       this.Text = String.Format(this.Text, this.Client.ProviderName);
       this.CanLogin = true;
       this.CanLogout = true;
@@ -213,6 +227,11 @@ namespace Nemiro.OAuth.LoginForms
       this.webBrowser1_DocumentCompleted(this.webBrowser1, new WebBrowserDocumentCompletedEventArgs(this.webBrowser1.Url));
     }
 
+    /// <summary>
+    /// Default callback.
+    /// </summary>
+    /// <param name="sender">Sender.</param>
+    /// <param name="e">Event arguments.</param>
     protected internal void DefaultCallback(object sender, WebBrowserCallbackEventArgs e)
     {
       Debug.WriteLine("Default Callback", "LoginForm");
@@ -290,6 +309,11 @@ namespace Nemiro.OAuth.LoginForms
       try
       {
         this.IsSuccessfully = this.Client.AccessToken.IsSuccessfully;
+
+        if (this.LoadUserInfo)
+        {
+          this.UserInfo = this.Client.GetUserInfo();
+        }
       }
       catch (Exception ex)
       {
@@ -354,6 +378,7 @@ namespace Nemiro.OAuth.LoginForms
         this.Invoke(new Action(Close));
         return;
       }
+
       // set dialog result
       if (this.IsSuccessfully)
       {
@@ -363,6 +388,7 @@ namespace Nemiro.OAuth.LoginForms
       {
         this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
       }
+
       // close form
       base.Close();
     }
