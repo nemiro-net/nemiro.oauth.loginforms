@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -12,9 +13,13 @@ namespace Net46.OneDrive
   public partial class Form1 : Form
   {
 
+    private const string API_BASE_URL = "https://api.onedrive.com/v1.0";
+    private const int FRAGMENT_SIZE = 5 * 1024 * 1024;
+
     private string LastFolderId = null;
     private string CurrentFolderId = null;
     private long CurrentFileLength = 0;
+    private long CurrentFileTotalBytesSended = 0;
 
     public Form1()
     {
@@ -69,11 +74,11 @@ namespace Net46.OneDrive
 
       this.Cursor = Cursors.WaitCursor;
 
-      string url = "https://api.onedrive.com/v1.0/drive/root/children";
+      string url = String.Format("{0}/drive/root/children", API_BASE_URL);
 
       if (!String.IsNullOrEmpty(this.CurrentFolderId))
       {
-        url = String.Format("https://api.onedrive.com/v1.0/drive/items/{0}/children", this.CurrentFolderId);
+        url = String.Format("{0}/drive/items/{1}/children", API_BASE_URL, this.CurrentFolderId);
       }
 
       OAuthUtility.GetAsync
@@ -94,7 +99,7 @@ namespace Net46.OneDrive
 
       this.Cursor = Cursors.Default;
 
-      if (Enumerable.Range(200, 299).Contains(result.StatusCode)) // result.StatusCode == 200
+      if (Enumerable.Range(200, 100).Contains(result.StatusCode)) // result.StatusCode == 200
       {
 
         listBox1.Items.Clear();
@@ -122,11 +127,11 @@ namespace Net46.OneDrive
     {
       // https://dev.onedrive.com/items/create.htm
 
-      string url = "https://api.onedrive.com/v1.0/drive/root/children";
+      string url = String.Format("{0}/drive/root/children", API_BASE_URL);
 
       if (!String.IsNullOrEmpty(this.CurrentFolderId))
       {
-        url = String.Format("https://api.onedrive.com/v1.0/drive/items/{0}/children", this.CurrentFolderId);
+        url = String.Format("{0}/drive/items/{1}/children", API_BASE_URL, this.CurrentFolderId);
       }
 
       OAuthUtility.PostAsync
@@ -154,7 +159,7 @@ namespace Net46.OneDrive
         return;
       }
 
-      if (Enumerable.Range(200, 299).Contains(result.StatusCode))
+      if (Enumerable.Range(200, 100).Contains(result.StatusCode))
       {
         this.GetFiles();
       }
@@ -193,7 +198,7 @@ namespace Net46.OneDrive
           var web = new WebClient();
           web.DownloadProgressChanged += DownloadProgressChanged;
           web.Headers.Add("Authorization", String.Format("Bearer {0}", Properties.Settings.Default.AccessToken));
-          web.DownloadFileAsync(new Uri(String.Format("https://api.onedrive.com/v1.0/drive/items/{0}/content", file["id"])), saveFileDialog1.FileName);
+          web.DownloadFileAsync(new Uri(String.Format("{0}/drive/items/{1}/content", API_BASE_URL, file["id"])), saveFileDialog1.FileName);
         }
       }
 
@@ -207,23 +212,37 @@ namespace Net46.OneDrive
 
     private void button2_Click(object sender, EventArgs e)
     {
-      // https://dev.onedrive.com/items/upload_put.htm
 
       progressBar1.Value = 0;
 
       if (openFileDialog1.ShowDialog() != DialogResult.OK) { return; }
 
+      var file = openFileDialog1.OpenFile();
+      this.CurrentFileLength = file.Length;
+      this.CurrentFileTotalBytesSended = 0;
+
+      if (this.CurrentFileLength < 10 * 1024 * 1024)
+      {
+        this.UploadSmallFile(file);
+      }
+      else
+      {
+        this.UploadLargeFile(file);
+      }
+    }
+
+    private void UploadSmallFile(Stream file)
+    {
+      // https://dev.onedrive.com/items/upload_put.htm
+
       string fileName = Path.GetFileName(openFileDialog1.FileName);
 
-      string url = String.Format("https://api.onedrive.com/v1.0/drive/root/children/{0}/content", fileName);
+      string url = String.Format("{0}/drive/root/children/{1}/content", API_BASE_URL, fileName);
 
       if (!String.IsNullOrEmpty(this.CurrentFolderId))
       {
-        url = String.Format("https://api.onedrive.com/v1.0/drive/items/{0}/children/{1}/content", this.CurrentFolderId, fileName);
+        url = String.Format("{0}/drive/items/{1}/children/{2}/content", API_BASE_URL, this.CurrentFolderId, fileName);
       }
-
-      var file = openFileDialog1.OpenFile();
-      this.CurrentFileLength = file.Length;
 
       OAuthUtility.PutAsync
       (
@@ -249,6 +268,96 @@ namespace Net46.OneDrive
       progressBar1.Value = Math.Min(Convert.ToInt32(Math.Round((e.TotalBytesWritten * 100.0) / this.CurrentFileLength)), 100);
     }
 
+    private void UploadLargeFile(Stream file)
+    {
+      // https://dev.onedrive.com/items/upload_large_files.htm
+
+      // 1. Create an upload session
+      string fileName = Path.GetFileName(openFileDialog1.FileName);
+
+      string url = String.Format("{0}/drive/root:/{1}:/upload.createSession", API_BASE_URL, fileName);
+
+      if (!String.IsNullOrEmpty(this.CurrentFolderId))
+      {
+        url = String.Format("{0}/drive/items/{1}:/{2}:/upload.createSession", API_BASE_URL, this.CurrentFolderId, fileName);
+      }
+
+      OAuthUtility.PostAsync
+      (
+        url,
+        authorization: new HttpAuthorization(AuthorizationType.Bearer, Properties.Settings.Default.AccessToken),
+        callback: (RequestResult result) =>
+        {
+          // https://dev.onedrive.com/items/upload_large_files.htm#upload-fragments
+
+          if (Enumerable.Range(200, 100).Contains(result.StatusCode))
+          {
+            string uploadUrl = result["uploadUrl"].ToString();
+            this.UploadLargeFileFragment(uploadUrl, new BinaryReader(file), 0, FRAGMENT_SIZE, file.Length);
+          }
+          else
+          {
+            this.ShowError(result);
+          }
+        }
+      );
+    }
+
+    private void UploadLargeFileFragment(string uploadUrl, BinaryReader stream, long start, long end, long total)
+    {
+      end = Math.Min(end, total);
+
+      byte[] buffer = stream.ReadBytes(Convert.ToInt32(end - start));
+
+      // Invoke(new Action(() => progressBar1.Value = Math.Min(Convert.ToInt32(Math.Round((start * 100.0) / total)), 100)));
+
+      Console.WriteLine("bytes {0}-{1}/{2}", start, end - 1, total);
+
+      OAuthUtility.PutAsync
+      (
+        uploadUrl,
+        authorization: new HttpAuthorization(AuthorizationType.Bearer, Properties.Settings.Default.AccessToken),
+        parameters: buffer,
+        headers: new NameValueCollection { { "Content-Range", String.Format("bytes {0}-{1}/{2}", start, end - 1, total) } },
+        streamWriteCallback: Upload_Processing2,
+        callback: (RequestResult result) =>
+        {
+          if (result.StatusCode == 202)
+          {
+            // var next = result["nextExpectedRanges"][0].ToString().Split('-').Select(itm => Convert.ToInt64(itm)).ToArray();
+            // next part
+            this.UploadLargeFileFragment(uploadUrl, stream, end, end + FRAGMENT_SIZE, total);
+          }
+          else if (result.StatusCode == 201)
+          {
+            stream.Close();
+            this.Upload_Result(result);
+          }
+          else
+          {
+            stream.Close();
+            this.ShowError(result);
+          }
+        }
+      );
+    }
+
+    private void Upload_Processing2(object sender, StreamWriteEventArgs e)
+    {
+      if (this.InvokeRequired)
+      {
+        this.Invoke(new Action<object, StreamWriteEventArgs>(this.Upload_Processing2), sender, e);
+        return;
+      }
+
+      if (e.IsCompleted)
+      {
+        this.CurrentFileTotalBytesSended += e.TotalBytesWritten;
+      }
+
+      progressBar1.Value = Math.Min(Convert.ToInt32(Math.Round((this.CurrentFileTotalBytesSended * 100.0) / this.CurrentFileLength)), 100);
+    }
+
     private void Upload_Result(RequestResult result)
     {
       if (this.InvokeRequired)
@@ -257,7 +366,7 @@ namespace Net46.OneDrive
         return;
       }
 
-      if (Enumerable.Range(200, 299).Contains(result.StatusCode))
+      if (Enumerable.Range(200, 100).Contains(result.StatusCode))
       {
         this.GetFiles();
       }
@@ -269,6 +378,12 @@ namespace Net46.OneDrive
 
     private void ShowError(RequestResult result)
     {
+      if (result.StatusCode == 401)
+      {
+        this.GetAccessToken();
+        return;
+      }
+
       if (result["error"].HasValue && result["error"]["message"].HasValue)
       {
         MessageBox.Show
