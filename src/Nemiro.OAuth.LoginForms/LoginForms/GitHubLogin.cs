@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// Copyright © Aleksey Nemiro, 2015-2016. All rights reserved.
+// Copyright © Aleksey Nemiro, 2015-2017. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,6 +52,8 @@ namespace Nemiro.OAuth.LoginForms
     /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
     public GitHubLogin(GitHubClient client, bool autoLogout = false, bool loadUserInfo = false) : base(client, autoLogout, loadUserInfo) 
     {
+      this.Width = 590;
+      this.Height = 660;
       this.Icon = Properties.Resources.github;
     }
 

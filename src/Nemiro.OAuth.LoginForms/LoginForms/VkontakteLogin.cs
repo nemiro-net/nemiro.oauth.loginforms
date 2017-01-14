@@ -53,6 +53,7 @@ namespace Nemiro.OAuth.LoginForms
     /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
     public VkontakteLogin(VkontakteClient client, bool autoLogout = false, bool loadUserInfo = false) : base(client, autoLogout, loadUserInfo) 
     {
+      this.Width = 672;
       this.Icon = Properties.Resources.vkontakte;
     }
     

@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// Copyright © Aleksey Nemiro, 2015-2016. All rights reserved.
+// Copyright © Aleksey Nemiro, 2015-2017. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ using Microsoft.Win32;
 using System.IO;
 using System.Threading;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Nemiro.OAuth.LoginForms
 {
@@ -30,6 +31,13 @@ namespace Nemiro.OAuth.LoginForms
   /// </summary>
   public partial class Login : Form
   {
+
+    [DllImport("wininet.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    private static extern bool InternetSetOption(int hInternet, int dwOption, IntPtr lpBuffer, int dwBufferLength);
+
+    private const int INTERNET_SUPPRESS_COOKIE_PERSIST = 3;
+    private const int INTERNET_OPTION_SUPPRESS_BEHAVIOR = 81;
+    private const int INTERNET_OPTION_END_BROWSER_SESSION = 42;
 
     /// <summary>
     /// An instance of the OAuth client.
@@ -107,6 +115,7 @@ namespace Nemiro.OAuth.LoginForms
         if (this.AutoLogout && this.CanLogout)
         {
           // clear browser cookies
+          this.WinInetSetOption(INTERNET_OPTION_END_BROWSER_SESSION, null);
           this.Logout();
         }
         else
@@ -139,7 +148,9 @@ namespace Nemiro.OAuth.LoginForms
     protected Login()
     {
       InitializeComponent();
+
       this.SetIEVersion();
+
       this.SetProgressImage(global::Nemiro.OAuth.LoginForms.Properties.Resources.loader2);
     }
 
@@ -170,6 +181,8 @@ namespace Nemiro.OAuth.LoginForms
 
       if (this.AutoLogout)
       {
+        this.WinInetSetOption(INTERNET_OPTION_SUPPRESS_BEHAVIOR, INTERNET_SUPPRESS_COOKIE_PERSIST);
+
         t = new Thread(() => this.Logout());
       }
       else
@@ -190,22 +203,8 @@ namespace Nemiro.OAuth.LoginForms
       {
         if (this.webBrowser1.ReadyState != WebBrowserReadyState.Complete && this.webBrowser1.ReadyState != WebBrowserReadyState.Interactive) // || this.webBrowser1.IsBusy
         {
-          //if (this.webBrowser1.ReadyState == WebBrowserReadyState.Interactive)
-          //{
-          //  this.StartWaiting();
-          //}
           return;
         }
-
-        /*try
-        {
-          if (this.webBrowser1.Document.Window.Frames.Count > 0 && this.webBrowser1.Document.Window.Frames[0].Url.Equals(e.Url))
-          {
-            this.StartWaiting();
-            return;
-          }
-        }
-        catch { }*/
       }
 
       if (this.Callback != null)
@@ -303,11 +302,11 @@ namespace Nemiro.OAuth.LoginForms
     {
       Debug.WriteLine(String.Format("GetAccessTokenThread {0}", args), "LoginForm");
 
-      // verify code
-      this.Client.AuthorizationCode = args.ToString();
-
       try
       {
+        // verify code
+        this.Client.AuthorizationCode = args.ToString();
+
         this.IsSuccessfully = this.Client.AccessToken.IsSuccessfully;
 
         if (this.LoadUserInfo)
@@ -514,9 +513,11 @@ namespace Nemiro.OAuth.LoginForms
       if (this.webBrowser1.Document != null && !String.IsNullOrEmpty(this.webBrowser1.Document.Cookie))
       {
         var cookies = webBrowser1.Document.Cookie.Split(';').ToList();
+
         foreach (var c in cookies)
         {
           var domains = this.webBrowser1.Url.Host.Split('.').ToList();
+
           while (domains.Count > 1)
           {
             this.webBrowser1.Document.Cookie = String.Format("{0}=; Thu, 01-Jan-1970 00:00:01 GMT; domain={1};", c.Split('=').First().Trim(), String.Join(".", domains));
@@ -544,6 +545,7 @@ namespace Nemiro.OAuth.LoginForms
         {
           // remove cookies
           this.KillCookies();
+
           // next action
           if (this.CanLogin)
           {
@@ -557,6 +559,28 @@ namespace Nemiro.OAuth.LoginForms
           }
         }
       );
+    }
+
+    protected bool WinInetSetOption(int settingCode, int? option)
+    {
+      IntPtr optionPtr = IntPtr.Zero;
+      int size = 0;
+
+      if (option.HasValue)
+      {
+        size = sizeof(int);
+        optionPtr = Marshal.AllocCoTaskMem(size);
+        Marshal.WriteInt32(optionPtr, option.Value);
+      }
+
+      bool success = InternetSetOption(0, settingCode, optionPtr, size);
+
+      if (optionPtr != IntPtr.Zero)
+      {
+        Marshal.Release(optionPtr);
+      }
+
+      return success;
     }
 
   }

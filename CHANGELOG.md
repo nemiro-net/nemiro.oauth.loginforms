@@ -2,6 +2,22 @@
 
 All notable changes to **Nemiro.OAuth.LoginForms** will be documented in this file.
 
+## [v1.6] - unreleased
+
+### Added
+* Additional method to Cookie cleaning.
+
+### Changed
+* Size of forms: Forsquare, GitHub, Google, VK, Yahoo and Yandex;
+* `ILoginForm` to public  ([#6](https://github.com/alekseynemiro/Nemiro.OAuth.LoginForms/issues/6)).
+
+### Fixed
+* Dropbox logout ([#7](https://github.com/alekseynemiro/Nemiro.OAuth.LoginForms/issues/7)).
+
+### Thanks
+* [ed-miller](https://github.com/ed-miller)
+* [austin-----](https://github.com/austin-----)
+
 ## [v1.5] - 2016-09-12
 
 ### Added

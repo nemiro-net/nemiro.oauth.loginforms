@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// Copyright © Aleksey Nemiro, 2015-2016. All rights reserved.
+// Copyright © Aleksey Nemiro, 2015-2017. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ namespace Nemiro.OAuth.LoginForms
     public GoogleLogin(GoogleClient client, bool autoLogout = false, bool loadUserInfo = false) : base(client, autoLogout, loadUserInfo) 
     {
       this.Width = 710;
-      this.Height = 560;
+      this.Height = 625;
       this.Icon = Properties.Resources.google;
     }
 

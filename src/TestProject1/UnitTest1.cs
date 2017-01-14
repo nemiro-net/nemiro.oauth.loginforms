@@ -9,7 +9,7 @@ namespace TestProject1
   public class UnitTest1
   {
 
-    private bool AutoLogout = false;
+    private bool AutoLogout = true;
     private bool LoadUserInfo = false;
 
     public UnitTest1()
@@ -36,7 +36,7 @@ namespace TestProject1
       this.TestForm(new AmazonLogin("amzn1.application-oa2-client.f0ffe4edc256488dae00dcaf96d75d1b", "764dcefe49b441c8c6244c93e5d5d04de54fda6dfdc83da9693bf346f4dc4515", "https://oauthproxy.nemiro.net/", this.AutoLogout, this.LoadUserInfo));
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void CodeProject()
     {
       this.TestForm(new CodeProjectLogin("92mWWELc2DjcL-6tu7L1Py6yllleqSCt", "YJXrk_Vzz4Ps02GqmaUY-aSLucxh4kfLq6oq0CtiukPfvbzb9yQG69NeDr2yiV9M", "https://oauthproxy.nemiro.net/", this.AutoLogout, this.LoadUserInfo));

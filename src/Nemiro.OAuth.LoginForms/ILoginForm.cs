@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// Copyright © Aleksey Nemiro, 2015. All rights reserved.
+// Copyright © Aleksey Nemiro, 2015, 2017. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,9 +18,17 @@ using System;
 namespace Nemiro.OAuth.LoginForms
 {
 
-  interface ILoginForm
+  /// <summary>
+  /// Defines login form.
+  /// </summary>
+  public interface ILoginForm
   {
 
+    /// <summary>
+    /// Web document loaded handler.
+    /// </summary>
+    /// <param name="webBrowser">The <see cref="System.Windows.Forms.WebBrowser"/> instance.</param>
+    /// <param name="url">The loaded url.</param>
     void WebDocumentLoaded(System.Windows.Forms.WebBrowser webBrowser, Uri url);
 
   }

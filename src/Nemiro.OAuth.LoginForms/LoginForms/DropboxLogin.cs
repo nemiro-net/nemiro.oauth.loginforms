@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// Copyright © Aleksey Nemiro, 2015. All rights reserved.
+// Copyright © Aleksey Nemiro, 2015, 2017. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -73,6 +73,42 @@ namespace Nemiro.OAuth.LoginForms
           base.AuthorizationCode = webBrowser.Document.GetElementById("auth-code-input").GetAttribute("value");
         }
       }
+    }
+
+    private bool IsLogout = false;
+
+    public override void Logout()
+    {
+      base.SetUrl
+      (
+        "https://www.dropbox.com/logout",
+        (object sender, WebBrowserCallbackEventArgs e) =>
+        {
+          if (!this.IsLogout)
+          {
+            var webBrowser = (WebBrowser)sender;
+
+            this.IsLogout = (webBrowser.Url.PathAndQuery.IndexOf("/login", 0, StringComparison.OrdinalIgnoreCase) != -1);
+          
+            if (!this.IsLogout)
+            {
+              return;
+            }
+          }
+
+          this.CanLogout = false;
+
+          // goto auth
+          if (this.CanLogin)
+          {
+            base.SetUrl(this.AuthorizationUrl);
+          }
+          else
+          {
+            base.GetAccessToken();
+          }
+        }
+      );
     }
 
   }

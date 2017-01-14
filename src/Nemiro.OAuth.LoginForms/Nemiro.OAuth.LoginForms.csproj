@@ -262,7 +262,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Graph1.dgml" />
     <None Include="LICENSE" />
     <None Include="Nemiro.OAuth.LoginForms.snk" />
     <None Include="packages.config" />
