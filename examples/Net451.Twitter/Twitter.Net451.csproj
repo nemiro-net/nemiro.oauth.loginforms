@@ -37,8 +37,8 @@
       <HintPath>packages\Nemiro.OAuth.1.12\lib\net451\Nemiro.OAuth.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Nemiro.OAuth.LoginForms, Version=1.5.451.2617, Culture=neutral, PublicKeyToken=2656cfe28099e3f4, processorArchitecture=MSIL">
-      <HintPath>packages\Nemiro.OAuth.LoginForms.1.5\lib\net451\Nemiro.OAuth.LoginForms.dll</HintPath>
+    <Reference Include="Nemiro.OAuth.LoginForms, Version=1.6.0.2705, Culture=neutral, PublicKeyToken=2656cfe28099e3f4, processorArchitecture=MSIL">
+      <HintPath>packages\Nemiro.OAuth.LoginForms.1.6\lib\net451\Nemiro.OAuth.LoginForms.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
