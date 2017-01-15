@@ -8,7 +8,7 @@ All notable changes to **Nemiro.OAuth.LoginForms** will be documented in this fi
 * Additional method to Cookie cleaning.
 
 ### Changed
-* Size of forms: Forsquare, GitHub, Google, VK, Yahoo and Yandex;
+* Size of forms: Foursquare, GitHub, Google, VK, Yahoo and Yandex;
 * `ILoginForm` to public  ([#6](https://github.com/alekseynemiro/Nemiro.OAuth.LoginForms/issues/6));
 * Version number: excluded version of .NET Framework ([#19](https://github.com/alekseynemiro/nemiro.oauth.dll/issues/19)).
 
