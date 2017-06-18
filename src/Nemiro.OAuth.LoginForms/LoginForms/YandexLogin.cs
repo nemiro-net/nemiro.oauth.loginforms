@@ -13,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------
-using System;
 using Nemiro.OAuth.Clients;
 using System.Windows.Forms;
 
@@ -33,7 +32,8 @@ namespace Nemiro.OAuth.LoginForms
     /// <param name="clientSecret">The Application Password.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
     /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
-    public YandexLogin(string clientId, string clientSecret, bool autoLogout = false, bool loadUserInfo = false) : this(clientId, clientSecret, null, autoLogout, loadUserInfo) { }
+    /// <param name="responseType">Allows to set the type of response that is expected from the server. Default: <see cref="ResponseType.Token"/>.</param>
+    public YandexLogin(string clientId, string clientSecret, bool autoLogout = false, bool loadUserInfo = false, string responseType = "token") : this(clientId, clientSecret, null, null, autoLogout, loadUserInfo, responseType) { }
 
     /// <summary>
     /// Initializes a new instance of the login form with a specified parameters.
@@ -41,9 +41,22 @@ namespace Nemiro.OAuth.LoginForms
     /// <param name="clientId">The Application ID.</param>
     /// <param name="clientSecret">The Application Password.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="returnUrl">The address to return. Default: <see href="https://oauth.yandex.ru/verification_code"/>.</param>
+    /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
+    /// <param name="responseType">Allows to set the type of response that is expected from the server. Default: <see cref="ResponseType.Token"/>.</param>
+    public YandexLogin(string clientId, string clientSecret, string returnUrl, bool autoLogout = false, bool loadUserInfo = false, string responseType = "token") : this(clientId, clientSecret, returnUrl, null, autoLogout, loadUserInfo, responseType) { }
+
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The Application ID.</param>
+    /// <param name="clientSecret">The Application Password.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="returnUrl">The address to return. Default: <see href="https://oauth.yandex.ru/verification_code"/>.</param>
     /// <param name="scope">The scope of the access request.</param>
     /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
-    public YandexLogin(string clientId, string clientSecret, string scope, bool autoLogout = false, bool loadUserInfo = false) : this(new YandexClient(clientId, clientSecret) { Scope = scope }, autoLogout, loadUserInfo) { }
+    /// <param name="responseType">Allows to set the type of response that is expected from the server. Default: <see cref="ResponseType.Token"/>.</param>
+    public YandexLogin(string clientId, string clientSecret, string returnUrl, string scope, bool autoLogout = false, bool loadUserInfo = false, string responseType = "token") : this(new YandexClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope }, autoLogout, loadUserInfo, responseType) { }
 
     /// <summary>
     /// Initializes a new instance of the login form with a specified OAuth client.
@@ -51,7 +64,8 @@ namespace Nemiro.OAuth.LoginForms
     /// <param name="client">Instance of the OAuth client.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
     /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
-    public YandexLogin(YandexClient client, bool autoLogout = false, bool loadUserInfo = false) : base(client, autoLogout, loadUserInfo) 
+    /// <param name="responseType">Allows to set the type of response that is expected from the server. Default: <see cref="ResponseType.Token"/>.</param>
+    public YandexLogin(YandexClient client, bool autoLogout = false, bool loadUserInfo = false, string responseType = "token") : base(client, autoLogout, loadUserInfo, responseType) 
     {
       this.Width = 690;
       this.Height = 655;
@@ -59,6 +73,10 @@ namespace Nemiro.OAuth.LoginForms
     }
 
     private bool IsLogout = false;
+
+    /// <summary>
+    /// Logout.
+    /// </summary>
     public override void Logout()
     {
       base.SetUrl
@@ -74,7 +92,7 @@ namespace Nemiro.OAuth.LoginForms
             {
               foreach (HtmlElement link in webBrowser.Document.Links)
               {
-                if (!String.IsNullOrEmpty(link.GetAttribute("href")) && link.GetAttribute("href").Contains("mode=logout"))
+                if (!string.IsNullOrEmpty(link.GetAttribute("href")) && link.GetAttribute("href").Contains("mode=logout"))
                 {
                   link.InvokeMember("click");
                   return;

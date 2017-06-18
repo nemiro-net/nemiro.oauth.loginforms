@@ -1,345 +1,259 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{EFB2C106-74F9-4635-8024-3E09DE5C8F22}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nemiro.OAuth.LoginForms</RootNamespace>
-    <AssemblyName>Nemiro.OAuth.LoginForms</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Release\Nemiro.OAuth.LoginForms.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
+    <TargetFrameworks>net35;net40;net45;net451;net452;net46;net461;net462</TargetFrameworks>
+    <GenerateAssemblyConfigurationAttribute>False</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>False</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>True</GenerateAssemblyProductAttribute>
+    <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>Nemiro.OAuth.LoginForms.snk</AssemblyOriginatorKeyFile>
+    <Authors>Aleksey Nemiro</Authors>
+    <Version>1.7.0.2794</Version>
+    <Copyright>© Aleksey Nemiro, 2015-2017</Copyright>
+    <PackageVersion>1.7.0-alpha2</PackageVersion>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/alekseynemiro/Nemiro.OAuth.LoginForms</PackageProjectUrl>
+    <PackageIconUrl>http://content.nemiro.net/images/Nemiro.OAuth.LoginForms.64.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/alekseynemiro/Nemiro.OAuth.LoginForms</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>OAuth;VB.NET;C#;WinForms;Windows Forms;Login;LoginForms;Auth;Social</PackageTags>
+    <Description>Ready-to-use authorization forms for popular sites using OAuth: Google, Facebook, Twitter, Dropbox, Yandex etc.
+
+Windows Forms (.NET Framework) only.</Description>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Nemiro.OAuth, Version=1.12.4.2615, Culture=neutral, PublicKeyToken=cb06320e362d440b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Nemiro.OAuth.1.12\lib\net40\Nemiro.OAuth.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
+
+  <Target Name="PostcompileScript" AfterTargets="Build" Condition=" '$(IsCrossTargetingBuild)' != 'true' ">
+    <Exec Command="dotnet pack --no-build --output F:/Nuget --configuration $(Configuration)" />
+  </Target>
+
+  <PropertyGroup>
+    <DocumentationFile>bin\Debug\$(TargetFramework)\Nemiro.OAuth.LoginForms.xml</DocumentationFile>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net35' ">
+    <FrameworkPathOverride>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
+  </PropertyGroup>
+  
+  <ItemGroup Condition=" '$(TargetFramework)' != 'net35' ">
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
+    <Reference Include="C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Web.dll" />
+    <Reference Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\v3.5\System.Web.Extensions.dll" />
+    <Reference Include="C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Windows.Forms.dll" />
+  </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="BrowserEmulationVersion.cs" />
-    <Compile Include="LoginForms\AmazonLogin.cs">
+    <PackageReference Include="Nemiro.OAuth" Version="1.13.0-alpha16" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Update="Login.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForms\DropboxLogin.cs">
+    <Compile Update="Login.Designer.cs">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ILoginForm.cs" />
-    <Compile Include="Login.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="LoginForms\FacebookLogin.cs">
+    <Compile Update="LoginForms\AmazonLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForms\FoursquareLogin.cs">
+    <Compile Update="LoginForms\CodeProjectLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForms\GitHubLogin.cs">
+    <Compile Update="LoginForms\DropboxLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForms\GoogleLogin.cs">
+    <Compile Update="LoginForms\FacebookLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForms\InstagramLogin.cs">
+    <Compile Update="LoginForms\FoursquareLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForms\LinkedInLogin.cs">
+    <Compile Update="LoginForms\GitHubLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForms\LiveLogin.cs">
+    <Compile Update="LoginForms\GoogleLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForms\MailRuLogin.cs">
+    <Compile Update="LoginForms\InstagramLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForms\OdnoklassnikiLogin.cs">
+    <Compile Update="LoginForms\LinkedInLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForms\SoundCloudLogin.cs">
+    <Compile Update="LoginForms\LiveLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForms\TumblrLogin.cs">
+    <Compile Update="LoginForms\MailRuLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForms\VkontakteLogin.cs">
+    <Compile Update="LoginForms\OdnoklassnikiLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForms\YahooLogin.cs">
+    <Compile Update="LoginForms\SoundCloudLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForms\YandexLogin.cs">
+    <Compile Update="LoginForms\TumblrLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForms\CodeProjectLogin.cs">
+    <Compile Update="LoginForms\TwitterLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
+    <Compile Update="LoginForms\VkontakteLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="LoginForms\YahooLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="LoginForms\YandexLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="LoginForms\TwitterLogin.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WebBrowser\WebBrowser.cs">
+    <Compile Update="WebBrowser\WebBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="WebBrowser\WebBrowserCallback.cs" />
-    <Compile Include="WebBrowser\WebBrowserCallbackEventArgs.cs" />
   </ItemGroup>
+
   <ItemGroup>
-    <EmbeddedResource Include="Login.ar.resx">
+    <EmbeddedResource Update="Login.ar.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.az.resx">
+    <EmbeddedResource Update="Login.az.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.be.resx">
+    <EmbeddedResource Update="Login.be.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.bg.resx">
+    <EmbeddedResource Update="Login.bg.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.cs.resx">
+    <EmbeddedResource Update="Login.cs.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.da.resx">
+    <EmbeddedResource Update="Login.da.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.de.resx">
+    <EmbeddedResource Update="Login.de.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.el.resx">
+    <EmbeddedResource Update="Login.el.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.es.resx">
+    <EmbeddedResource Update="Login.es.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.et.resx">
+    <EmbeddedResource Update="Login.et.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.fi.resx">
+    <EmbeddedResource Update="Login.fi.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.fr.resx">
+    <EmbeddedResource Update="Login.fr.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.ga.resx">
+    <EmbeddedResource Update="Login.ga.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.he.resx">
+    <EmbeddedResource Update="Login.he.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.hi.resx">
+    <EmbeddedResource Update="Login.hi.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.hr.resx">
+    <EmbeddedResource Update="Login.hr.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.hu.resx">
+    <EmbeddedResource Update="Login.hu.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.hy.resx">
+    <EmbeddedResource Update="Login.hy.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.is.resx">
+    <EmbeddedResource Update="Login.is.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.it.resx">
+    <EmbeddedResource Update="Login.it.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.ja.resx">
+    <EmbeddedResource Update="Login.ja.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.kk.resx">
+    <EmbeddedResource Update="Login.kk.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.ko.resx">
+    <EmbeddedResource Update="Login.ko.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.lt.resx">
+    <EmbeddedResource Update="Login.lt.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.lv.resx">
+    <EmbeddedResource Update="Login.lv.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.no.resx">
+    <EmbeddedResource Update="Login.no.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.pl.resx">
+    <EmbeddedResource Update="Login.pl.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.pt.resx">
+    <EmbeddedResource Update="Login.pt.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.resx">
+    <EmbeddedResource Update="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.ro.resx">
+    <EmbeddedResource Update="Login.ro.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.ru.resx">
+    <EmbeddedResource Update="Login.ru.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.sk.resx">
+    <EmbeddedResource Update="Login.sk.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.sl.resx">
+    <EmbeddedResource Update="Login.sl.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.sq.resx">
+    <EmbeddedResource Update="Login.sq.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.sr.resx">
+    <EmbeddedResource Update="Login.sr.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.sv.resx">
+    <EmbeddedResource Update="Login.sv.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.tg.resx">
+    <EmbeddedResource Update="Login.tg.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.tr.resx">
+    <EmbeddedResource Update="Login.tr.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.uk.resx">
+    <EmbeddedResource Update="Login.uk.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.uz.resx">
+    <EmbeddedResource Update="Login.uz.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.vi.resx">
+    <EmbeddedResource Update="Login.vi.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.zh.resx">
+    <EmbeddedResource Update="Login.zh.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="LICENSE" />
-    <None Include="Nemiro.OAuth.LoginForms.snk" />
-    <None Include="packages.config" />
-    <None Include="Resources\loader.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\aleksey.nemiro.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\dropbox.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\mediakit.md" />
-    <None Include="Resources\twitter.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\facebook.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\google.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\yandex.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\amazon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\foursquare.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\github.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\instagram.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\linkedin.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\live.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\mailru.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\odnoklassniki .ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\soundcloud.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\tumblr.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\vkontakte.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\yahoo.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\printerest.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\sourceforge.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\codeproject.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\loader2.gif" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  
 </Project>

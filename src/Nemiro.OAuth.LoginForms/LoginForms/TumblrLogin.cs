@@ -59,6 +59,9 @@ namespace Nemiro.OAuth.LoginForms
       }
     }
 
+    /// <summary>
+    /// Logout.
+    /// </summary>
     public override void Logout()
     {
       base.SetUrl

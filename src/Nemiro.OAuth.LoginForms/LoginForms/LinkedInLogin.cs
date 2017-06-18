@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// Copyright © Aleksey Nemiro, 2015-2016. All rights reserved.
+// Copyright © Aleksey Nemiro, 2015-2017. All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ namespace Nemiro.OAuth.LoginForms
     /// <param name="clientId">The <b>Api Key</b> obtained from the <see href="https://www.linkedin.com/secure/developer">LinkedIn Dashboard</see>.</param>
     /// <param name="clientSecret">The <b>Secret Key</b> obtained from the <see href="https://www.linkedin.com/secure/developer">LinkedIn Dashboard</see>.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
-    /// <param name="returnUrl">The address to return.</param>
+    /// <param name="returnUrl">The address to return. You can use <see href="https://oauthproxy.nemiro.net"/>, but for reliability use your own server that you control.</param>
     /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
     public LinkedInLogin(string clientId, string clientSecret, string returnUrl, bool autoLogout = false, bool loadUserInfo = false) : this(clientId, clientSecret, returnUrl, null, autoLogout, loadUserInfo) { }
 
@@ -41,7 +41,7 @@ namespace Nemiro.OAuth.LoginForms
     /// <param name="clientSecret">The <b>Secret Key</b> obtained from the <see href="https://www.linkedin.com/secure/developer">LinkedIn Dashboard</see>.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
     /// <param name="scope">The scope of the access request.</param>
-    /// <param name="returnUrl">The address to return.</param>
+    /// <param name="returnUrl">The address to return. You can use <see href="https://oauthproxy.nemiro.net"/>, but for reliability use your own server that you control.</param>
     /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
     public LinkedInLogin(string clientId, string clientSecret, string returnUrl, string scope, bool autoLogout = false, bool loadUserInfo = false) : this(new LinkedInClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope }, autoLogout, loadUserInfo) { }
 
@@ -51,7 +51,7 @@ namespace Nemiro.OAuth.LoginForms
     /// <param name="client">Instance of the OAuth client.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
     /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
-    public LinkedInLogin(LinkedInClient client, bool autoLogout = false, bool loadUserInfo = false) : base(client, autoLogout, loadUserInfo) 
+    public LinkedInLogin(LinkedInClient client, bool autoLogout = false, bool loadUserInfo = false) : base(client, autoLogout, loadUserInfo, ResponseType.Code) // NOTE: supported only "code"
     {
       this.Icon = Properties.Resources.linkedin;
       this.Width = 642;

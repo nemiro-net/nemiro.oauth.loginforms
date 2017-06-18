@@ -15,6 +15,7 @@
 // ----------------------------------------------------------------------------
 using Nemiro.OAuth.Clients;
 using System.Windows.Forms;
+using System;
 
 namespace Nemiro.OAuth.LoginForms
 {
@@ -32,6 +33,7 @@ namespace Nemiro.OAuth.LoginForms
     /// <param name="clientSecret">The Client Secret obtained from the <see href="https://github.com/settings/applications">GitHub Applications</see>.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
     /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
+    [Obsolete("Please use an overloads with a return url.", true)]
     public GitHubLogin(string clientId, string clientSecret, bool autoLogout = false, bool loadUserInfo = false) : this(clientId, clientSecret, null, autoLogout, loadUserInfo) { }
 
     /// <summary>
@@ -42,7 +44,44 @@ namespace Nemiro.OAuth.LoginForms
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
     /// <param name="scope">The scope of the access request.</param>
     /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
-    public GitHubLogin(string clientId, string clientSecret, string scope, bool autoLogout = false, bool loadUserInfo = false) : this(new GitHubClient(clientId, clientSecret) { Scope = scope }, autoLogout, loadUserInfo) { }
+    /// <param name="obsolete">Do not use this parameter. It is added to avoid conflicts with overloading methods.</param>
+    [Obsolete("Please use an overloads with a return url.", true)]
+    public GitHubLogin(string clientId, string clientSecret, string scope, bool autoLogout = false, bool loadUserInfo = false, bool obsolete = true) : this(new GitHubClient(clientId, clientSecret) { Scope = scope }, autoLogout, loadUserInfo) { }
+
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The Client ID obtained from the <see href="https://github.com/settings/applications">GitHub Applications</see>.</param>
+    /// <param name="clientSecret">The Client Secret obtained from the <see href="https://github.com/settings/applications">GitHub Applications</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="scope">The scope of the access request.</param>
+    /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
+    /// <param name="returnUrl">The address to return. You can use <see href="https://oauthproxy.nemiro.net"/>, but for reliability use your own server that you control.</param>
+    public GitHubLogin(string clientId, string clientSecret, string returnUrl, bool autoLogout = false, bool loadUserInfo = false) : this(clientId, clientSecret, returnUrl, null, autoLogout, loadUserInfo, ResponseType.Token) { }
+
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The Client ID obtained from the <see href="https://github.com/settings/applications">GitHub Applications</see>.</param>
+    /// <param name="clientSecret">The Client Secret obtained from the <see href="https://github.com/settings/applications">GitHub Applications</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="scope">The scope of the access request.</param>
+    /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
+    /// <param name="returnUrl">The address to return. You can use <see href="https://oauthproxy.nemiro.net"/>, but for reliability use your own server that you control.</param>
+    /// <param name="responseType">Allows to set the type of response that is expected from the server. Default: <see cref="ResponseType.Token"/>.</param>
+    public GitHubLogin(string clientId, string clientSecret, string returnUrl, bool autoLogout = false, bool loadUserInfo = false, string responseType = "token") : this(clientId, clientSecret, returnUrl, null, autoLogout, loadUserInfo, responseType) { }
+
+    /// <summary>
+    /// Initializes a new instance of the login form with a specified parameters.
+    /// </summary>
+    /// <param name="clientId">The Client ID obtained from the <see href="https://github.com/settings/applications">GitHub Applications</see>.</param>
+    /// <param name="clientSecret">The Client Secret obtained from the <see href="https://github.com/settings/applications">GitHub Applications</see>.</param>
+    /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
+    /// <param name="scope">The scope of the access request.</param>
+    /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
+    /// <param name="returnUrl">The address to return. You can use <see href="https://oauthproxy.nemiro.net"/>, but for reliability use your own server that you control.</param>
+    /// <param name="responseType">Allows to set the type of response that is expected from the server. Default: <see cref="ResponseType.Token"/>.</param>
+    public GitHubLogin(string clientId, string clientSecret, string returnUrl, string scope, bool autoLogout = false, bool loadUserInfo = false, string responseType = "token") : this(new GitHubClient(clientId, clientSecret) { ReturnUrl = returnUrl, Scope = scope }, autoLogout, loadUserInfo, responseType) { }
 
     /// <summary>
     /// Initializes a new instance of the login form with a specified OAuth client.
@@ -50,7 +89,7 @@ namespace Nemiro.OAuth.LoginForms
     /// <param name="client">Instance of the OAuth client.</param>
     /// <param name="autoLogout">Disables saving and restoring authorization cookies in WebBrowser. Default: false.</param>
     /// <param name="loadUserInfo">Indicates the need to make a request for recive the user profile or not. Default: false.</param>
-    public GitHubLogin(GitHubClient client, bool autoLogout = false, bool loadUserInfo = false) : base(client, autoLogout, loadUserInfo) 
+    public GitHubLogin(GitHubClient client, bool autoLogout = false, bool loadUserInfo = false, string responseType = "token") : base(client, autoLogout, loadUserInfo, responseType) 
     {
       this.Width = 590;
       this.Height = 660;
@@ -59,6 +98,9 @@ namespace Nemiro.OAuth.LoginForms
 
     private bool IsLogout = false;
 
+    /// <summary>
+    /// Logout.
+    /// </summary>
     public override void Logout()
     {
       base.SetUrl
