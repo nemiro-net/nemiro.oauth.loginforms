@@ -9,14 +9,14 @@ In this release, the authentication logic has changed.
 <details>
   <summary>Now the access token requests are executed, not the authorization code.</summary>
   <p>
-    For most forms, the `returnUrl` parameter in the constructor is now required.
+    For most forms, the <code>returnUrl</code> parameter in the constructor is now required.
 
     You may need to obtain new keys to perform authentication. 
     For example, for Google, you need to create a key for web applications, instead of standalone.
 
-    The old behavior can be returned by specifying a `responseType` in the designer with the value `ResponseType.Code`:
+    The old behavior can be returned by specifying a <code>responseType</code> in the designer with the value <code>ResponseType.Code</code>:
 
-    ```C#
+    <div class="highlight highlight-source-cs"><pre>
     var login = new GoogleLogin
     (
       "934704666049-129jsvmelksmcmf250ir90aqn8pk4nak.apps.googleusercontent.com", 
@@ -26,7 +26,7 @@ In this release, the authentication logic has changed.
       loadUserInfo: true, 
       responseType: ResponseType.Code
     );
-    ```
+    </pre></div>
   </p>
 </details>
 
