@@ -8,26 +8,21 @@ In this release, the authentication logic has changed.
 
 <details>
   <summary>Now the access token requests are executed, not the authorization code.</summary>
-  <p>
-    For most forms, the <code>returnUrl</code> parameter in the constructor is now required.
-
-    You may need to obtain new keys to perform authentication. 
-    For example, for Google, you need to create a key for web applications, instead of standalone.
-
-    The old behavior can be returned by specifying a <code>responseType</code> in the designer with the value <code>ResponseType.Code</code>:
-
-    <div class="highlight highlight-source-cs"><pre>
-    var login = new GoogleLogin
-    (
-      "934704666049-129jsvmelksmcmf250ir90aqn8pk4nak.apps.googleusercontent.com", 
-      "OS7HZ1cfJnhdIFZ6fUsgamH-",
-      returnUrl: null, 
-      scope: "https://www.googleapis.com/auth/drive", 
-      loadUserInfo: true, 
-      responseType: ResponseType.Code
-    );
-    </pre></div>
-  </p>
+  <p>For most forms, the <code>returnUrl</code> parameter in the constructor is now required.</p>
+  <p>You may need to obtain new keys to perform authentication.<br />
+  For example, for Google, you need to create a key for web applications, instead of standalone.</p>
+  <p>The old behavior can be returned by specifying a <code>responseType</code> in the designer with the value <code>ResponseType.Code</code>:</p>
+  <div class="highlight highlight-source-cs"><pre>
+  var login = new GoogleLogin
+  (
+    "934704666049-129jsvmelksmcmf250ir90aqn8pk4nak.apps.googleusercontent.com", 
+    "OS7HZ1cfJnhdIFZ6fUsgamH-",
+    returnUrl: null, 
+    scope: "https://www.googleapis.com/auth/drive", 
+    loadUserInfo: true, 
+    responseType: ResponseType.Code
+  );
+  </pre></div>
 </details>
 
 ### Added
