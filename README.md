@@ -12,10 +12,13 @@ To install **Nemiro.OAuth.LoginForms**, run the following command in the **Packa
 
 ### System Requirements
 
-* [Nemiro.OAuth](https://github.com/alekseynemiro/nemiro.oauth.dll) v1.10 or later;
-* Microsoft Windows XP, 7 or later with .NET Framework 3.5 or later;
-* Microsoft Visual Studio 2013 or later;
-* NuGet for Visual Studio.
+* [Nemiro.OAuth](https://github.com/alekseynemiro/nemiro.oauth.dll) v1.13 or later;
+* .NET Framework 3.5, 4.0, 4.5, 4.6 or 4.7;
+* Windows Forms.
+
+## License
+
+**Nemiro.OAuth.LoginForms** is distributed under **Apache License Version 2.0**.
 
 ### How to use
 
@@ -32,7 +35,9 @@ var login = new DropboxLogin
   "5nkunr8uscwfoba", 
   "n7x9icfwoe6dehq", 
   "https://oauthproxy.nemiro.net/"
-) { Owner = this };
+);
+
+login.Owner = this;
 
 // show login form
 login.ShowDialog();
@@ -48,7 +53,14 @@ if (login.IsSuccessfully)
 **Visual Basic .NET**
 ```VBNet
 ' create login form
-Dim login As New DropboxLogin("5nkunr8uscwfoba", "n7x9icfwoe6dehq", "https://oauthproxy.nemiro.net/") With { .Owner = Me }
+Dim login As New DropboxLogin _
+(
+  "5nkunr8uscwfoba", 
+  "n7x9icfwoe6dehq", 
+  "https://oauthproxy.nemiro.net/"
+)
+
+login.Owner = Me
 
 ' show login form
 login.ShowDialog()

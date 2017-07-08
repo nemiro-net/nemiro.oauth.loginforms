@@ -14,10 +14,13 @@
 
 ### Системные требования
 
-* [Nemiro.OAuth](https://github.com/alekseynemiro/nemiro.oauth.dll) v1.10 или новее;
-* Microsoft Windows XP/7/8/10 с .NET Framework 3.5 или новее;
-* Microsoft Visual Studio 2013 или новее;
-* NuGet для Visual Studio.
+* [Nemiro.OAuth](https://github.com/alekseynemiro/nemiro.oauth.dll) v1.13 или новее;
+* .NET Framework 3.5, 4.0, 4.5, 4.6 или 4.7;
+* Windows Forms.
+
+### Лицензия
+
+**Nemiro.OAuth.LoginForms** поставляется на условиях лицензии **Apache License Version 2.0**.
 
 ### Как использовать?
 
@@ -35,7 +38,9 @@ var login = new DropboxLogin
   "5nkunr8uscwfoba", 
   "n7x9icfwoe6dehq", 
   "https://oauthproxy.nemiro.net/"
-) { Owner = this };
+)
+
+login.Owner = this;
 
 // показываем форму в режиме "диалог"
 login.ShowDialog();
@@ -51,7 +56,14 @@ if (login.IsSuccessfully)
 **Visual Basic .NET**
 ```VBNet
 ' создаем форму
-Dim login As New DropboxLogin("5nkunr8uscwfoba", "n7x9icfwoe6dehq", "https://oauthproxy.nemiro.net/") With { .Owner = Me }
+Dim login As New DropboxLogin _
+(
+  "5nkunr8uscwfoba", 
+  "n7x9icfwoe6dehq", 
+  "https://oauthproxy.nemiro.net/"
+)
+
+login.Owner = Me
 
 ' показываем форму в режиме "диалог"
 login.ShowDialog()
