@@ -13,7 +13,9 @@ namespace Net46.OneDrive
   public partial class Form1 : Form
   {
 
+    // https://dev.onedrive.com/direct-endpoint-differences.htm#discovering-an-endpoint
     private const string API_BASE_URL = "https://api.onedrive.com/v1.0";
+
     private const int FRAGMENT_SIZE = 5 * 1024 * 1024;
 
     private string LastFolderId = null;
@@ -46,7 +48,7 @@ namespace Net46.OneDrive
         "7N3IwTyTGoGGimndiJAQiG2GBspOLyFZ",
         "http://oauthproxy.nemiro.net/",
         // scope: https://dev.onedrive.com/auth/msa_oauth.htm#authentication-scopes
-        "onedrive.readwrite", // ,onedrive.appfolder
+        "onedrive.readwrite", //,onedrive.appfolder
         loadUserInfo: true
       );
 

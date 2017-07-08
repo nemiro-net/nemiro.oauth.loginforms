@@ -138,7 +138,7 @@ namespace Nemiro.OAuth.LoginForms
 
       if (form.IsSuccessfully)
       {
-        Assert.True(!string.IsNullOrEmpty(form.AccessTokenValue));
+        Assert.True(!String.IsNullOrEmpty(form.AccessTokenValue));
         
         if (LOAD_USER_INFO)
         {

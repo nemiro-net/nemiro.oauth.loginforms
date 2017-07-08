@@ -14,15 +14,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Nemiro.OAuth;
 using Nemiro.OAuth.LoginForms;
@@ -59,6 +52,7 @@ namespace Yandex.Disk.Net45
     private void GetAccessToken()
     {
       var login = new YandexLogin("80bbde206ef74606bf239039bce82ed0", "123c7a7a69614d18a5d5e23397009bac", this.AlwaysNewToken);
+
       login.Owner = this;
       login.ShowDialog();
 
@@ -66,6 +60,7 @@ namespace Yandex.Disk.Net45
       {
         Properties.Settings.Default.AccessToken = login.AccessToken.Value;
         Properties.Settings.Default.Save();
+
         this.Authorization = new HttpAuthorization(AuthorizationType.OAuth, Properties.Settings.Default.AccessToken);
         this.GetFiles();
       }
@@ -160,6 +155,7 @@ namespace Yandex.Disk.Net45
     private void listBox1_DoubleClick(object sender, EventArgs e)
     {
       if (listBox1.SelectedItem == null) { return; }
+
       UniValue file = (UniValue)listBox1.SelectedItem;
 
       if (file["name"] == "..")
@@ -178,7 +174,8 @@ namespace Yandex.Disk.Net45
         else
         {
           saveFileDialog1.FileName = Path.GetFileName(file["name"].ToString());
-          if (saveFileDialog1.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+
+          if (saveFileDialog1.ShowDialog() != DialogResult.OK)
           {
             return;
           }
@@ -230,7 +227,7 @@ namespace Yandex.Disk.Net45
 
     private void button2_Click(object sender, EventArgs e)
     {
-      if (openFileDialog1.ShowDialog() != System.Windows.Forms.DialogResult.OK) { return; }
+      if (openFileDialog1.ShowDialog() != DialogResult.OK) { return; }
             
       var fileStream = openFileDialog1.OpenFile();
 

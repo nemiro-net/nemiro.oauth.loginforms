@@ -1,16 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net35;net40;net45;net451;net452;net46;net461;net462</TargetFrameworks>
+    <TargetFrameworks>net35;net40;net45;net451;net452;net46;net461;net462;net47</TargetFrameworks>
+    <AssemblyName>Nemiro.OAuth.LoginForms</AssemblyName>
+    <Version>1.7.0.2820</Version>
     <GenerateAssemblyConfigurationAttribute>False</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>False</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>True</GenerateAssemblyProductAttribute>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>Nemiro.OAuth.LoginForms.snk</AssemblyOriginatorKeyFile>
     <Authors>Aleksey Nemiro</Authors>
-    <Version>1.7.0.2794</Version>
     <Copyright>© Aleksey Nemiro, 2015-2017</Copyright>
-    <PackageVersion>1.7.0-alpha2</PackageVersion>
+    <PackageId>Nemiro.OAuth.LoginForms</PackageId>
+    <PackageVersion>1.7.0-beta1</PackageVersion>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/alekseynemiro/Nemiro.OAuth.LoginForms</PackageProjectUrl>
     <PackageIconUrl>http://content.nemiro.net/images/Nemiro.OAuth.LoginForms.64.png</PackageIconUrl>
@@ -48,7 +50,7 @@ Windows Forms (.NET Framework) only.</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nemiro.OAuth" Version="1.13.0-alpha16" />
+    <PackageReference Include="Nemiro.OAuth" Version="1.13.0-beta1" />
   </ItemGroup>
   
   <ItemGroup>

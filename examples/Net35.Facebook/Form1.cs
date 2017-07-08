@@ -14,12 +14,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Nemiro.OAuth.LoginForms;
 using Nemiro.OAuth;
@@ -50,6 +44,7 @@ namespace Facebook.Net35
     private void GetAccessToken()
     {
       var login = new FacebookLogin("1435890426686808", "c6057dfae399beee9e8dc46a4182e8fd");
+
       login.Owner = this;
       login.ShowDialog();
 

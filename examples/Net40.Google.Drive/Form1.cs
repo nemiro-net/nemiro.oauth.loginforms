@@ -50,7 +50,27 @@ namespace Google.Drive.Net40
 
     private void GetAccessToken()
     {
-      var login = new GoogleLogin("934704666049-129jsvmelksmcmf250ir90aqn8pk4nak.apps.googleusercontent.com", "OS7HZ1cfJnhdIFZ6fUsgamH-", "https://www.googleapis.com/auth/drive", loadUserInfo: true);
+      /*
+      var login = new GoogleLogin
+      (
+        "934704666049-g1jke2vn0nm87djsenpuqk5k2cnuk39p.apps.googleusercontent.com", 
+        "ZPCjyQNDe7DfgqKICKBSK1Mh", 
+        "https://oauthproxy.nemiro.net/", 
+        "https://www.googleapis.com/auth/drive", 
+        loadUserInfo: true
+      );
+      */
+
+      var login = new GoogleLogin
+      (
+        "934704666049-129jsvmelksmcmf250ir90aqn8pk4nak.apps.googleusercontent.com", 
+        "OS7HZ1cfJnhdIFZ6fUsgamH-",
+        returnUrl: null, 
+        scope: "https://www.googleapis.com/auth/drive", 
+        loadUserInfo: true, 
+        responseType: ResponseType.Code
+      );
+      
       login.Owner = this;
       login.ShowDialog();
 

@@ -47,6 +47,11 @@ namespace Nemiro.OAuth.LoginForms
       this.Icon = Properties.Resources.twitter;
     }
 
+    /// <summary>
+    /// Handler of event to receive notification when the document finishes loading. 
+    /// </summary>
+    /// <param name="webBrowser">The <see cref="System.Windows.Forms.WebBrowser"/> instance.</param>
+    /// <param name="url">The loaded url.</param>
     public void WebDocumentLoaded(System.Windows.Forms.WebBrowser webBrowser, Uri url)
     {
       if (url.ToString().Equals("https://api.twitter.com/oauth/authorize", StringComparison.OrdinalIgnoreCase))

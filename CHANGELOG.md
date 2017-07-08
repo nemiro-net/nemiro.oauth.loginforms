@@ -4,6 +4,32 @@ All notable changes to **Nemiro.OAuth.LoginForms** will be documented in this fi
 
 ## [v1.7] - unreleased
 
+In this release, the authentication logic has changed. 
+
+<details>
+  <summary>Now the access token requests are executed, not the authorization code.</summary>
+  <p>
+    For most forms, the `returnUrl` parameter in the constructor is now required.
+
+    You may need to obtain new keys to perform authentication. 
+    For example, for Google, you need to create a key for web applications, instead of standalone.
+
+    The old behavior can be returned by specifying a `responseType` in the designer with the value `ResponseType.Code`:
+
+    ```C#
+    var login = new GoogleLogin
+    (
+      "934704666049-129jsvmelksmcmf250ir90aqn8pk4nak.apps.googleusercontent.com", 
+      "OS7HZ1cfJnhdIFZ6fUsgamH-",
+      returnUrl: null, 
+      scope: "https://www.googleapis.com/auth/drive", 
+      loadUserInfo: true, 
+      responseType: ResponseType.Code
+    );
+    ```
+  </p>
+</details>
+
 ### Added
 
 * Support `ResponseType.Token`.

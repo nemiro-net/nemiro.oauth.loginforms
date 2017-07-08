@@ -59,6 +59,9 @@ namespace Nemiro.OAuth.LoginForms
       this.Icon = Properties.Resources.instagram;
     }
 
+    /// <summary>
+    /// Logout.
+    /// </summary>
     public override void Logout()
     {
       base.SetUrl

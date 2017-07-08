@@ -93,7 +93,12 @@ namespace Nemiro.OAuth.LoginForms
       this.Height = 515;
       this.Icon = Properties.Resources.dropbox;
     }
-
+    
+    /// <summary>
+    /// Handler of event to receive notification when the document finishes loading. 
+    /// </summary>
+    /// <param name="webBrowser">The <see cref="System.Windows.Forms.WebBrowser"/> instance.</param>
+    /// <param name="url">The loaded url.</param>
     public void WebDocumentLoaded(System.Windows.Forms.WebBrowser webBrowser, Uri url)
     {
       // waiting for results
@@ -101,6 +106,14 @@ namespace Nemiro.OAuth.LoginForms
       {
         // the user has refused to give permission 
         this.Close();
+      }
+      else
+      {
+        if (webBrowser.Document.GetElementById("auth-code-input") != null)
+        {
+          // set authorization code
+          base.AuthorizationCode = webBrowser.Document.GetElementById("auth-code-input").GetAttribute("value");
+        }
       }
     }
 

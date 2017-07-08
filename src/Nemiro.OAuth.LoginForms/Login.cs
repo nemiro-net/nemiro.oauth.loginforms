@@ -118,7 +118,7 @@ namespace Nemiro.OAuth.LoginForms
       }
       set
       {
-        Debug.WriteLine(string.Format("Set AuthorizationCode {0}", value), "LoginForm");
+        Debug.WriteLine(String.Format("Set AuthorizationCode {0}", value), "LoginForm");
 
         // bad solution...
         _AuthorizationCode = value;
@@ -188,7 +188,7 @@ namespace Nemiro.OAuth.LoginForms
       this.Client = client;
       this.AutoLogout = autoLogout;
       this.LoadUserInfo = loadUserInfo;
-      this.Text = string.Format(this.Text, this.Client.ProviderName);
+      this.Text = String.Format(this.Text, this.Client.ProviderName);
       this.CanLogin = true;
       this.CanLogout = true;
 
@@ -228,7 +228,7 @@ namespace Nemiro.OAuth.LoginForms
 
     private void webBrowser1_DocumentTitleChanged(object sender, EventArgs e)
     {
-      Debug.WriteLine(string.Format("{0} {1}, title <{2}>, state <{3}>", "DocumentTitleChanged", webBrowser1.Url, webBrowser1.DocumentTitle, webBrowser1.ReadyState), "LoginForm");
+      Debug.WriteLine(String.Format("{0} {1}, title <{2}>, state <{3}>", "DocumentTitleChanged", webBrowser1.Url, webBrowser1.DocumentTitle, webBrowser1.ReadyState), "LoginForm");
 
       if (!this.LastUri.Equals(webBrowser1.Url) && (this.webBrowser1.ReadyState == WebBrowserReadyState.Complete || this.webBrowser1.ReadyState == WebBrowserReadyState.Interactive))
       {
@@ -241,19 +241,19 @@ namespace Nemiro.OAuth.LoginForms
 
     private void webBrowser1_Navigating(object sender, WebBrowserNavigatingEventArgs e)
     {
-      Debug.WriteLine(string.Format("{0} {1}", "Navigating", e.Url), "LoginForm");
+      Debug.WriteLine(String.Format("{0} {1}", "Navigating", e.Url), "LoginForm");
     }
 
     private void webBrowser1_Navigated(object sender, WebBrowserNavigatedEventArgs e)
     {
-      Debug.WriteLine(string.Format("{0} {1}, state <{2}>", "Navigated", e.Url, this.webBrowser1.ReadyState), "LoginForm");
+      Debug.WriteLine(String.Format("{0} {1}, state <{2}>", "Navigated", e.Url, this.webBrowser1.ReadyState), "LoginForm");
     }
 
 #endif
 
     private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
     {
-      Debug.WriteLine(string.Format("{0} {1}, state <{2}>", "DocumentCompleted", e.Url, this.webBrowser1.ReadyState), "LoginForm");
+      Debug.WriteLine(String.Format("{0} {1}, state <{2}>", "DocumentCompleted", e.Url, this.webBrowser1.ReadyState), "LoginForm");
 
       if (!this.Timeout)
       {
@@ -335,17 +335,17 @@ namespace Nemiro.OAuth.LoginForms
 
       string errorMessage = null;
 
-      if (!string.IsNullOrEmpty(e.Url.Query))
+      if (!String.IsNullOrEmpty(e.Url.Query))
       {
         errorMessage = this.GetErrorMessage(UniValue.ParseParameters(e.Url.Query.Substring(1)));
       }
       
-      if (string.IsNullOrEmpty(errorMessage) && !string.IsNullOrEmpty(e.Url.Fragment))
+      if (String.IsNullOrEmpty(errorMessage) && !String.IsNullOrEmpty(e.Url.Fragment))
       {
         errorMessage = this.GetErrorMessage(UniValue.ParseParameters(e.Url.Fragment.Substring(1)));
       }
 
-      if (!string.IsNullOrEmpty(errorMessage))
+      if (!String.IsNullOrEmpty(errorMessage))
       {
         // MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         this.ErrorMessage = errorMessage;
@@ -398,12 +398,12 @@ namespace Nemiro.OAuth.LoginForms
 
       if (this.Client.Version.Major == 2 && this.Client.Get<OAuth2Client>().ResponseType.IsToken && this.AccessToken != null)
       {
-        this.GetAccessTokenThread(string.Empty);
+        this.GetAccessTokenThread(String.Empty);
 
         return;
       }
 
-      if (string.IsNullOrEmpty(authorizationCode))
+      if (String.IsNullOrEmpty(authorizationCode))
       {
         authorizationCode = this.AuthorizationCode;
       }
@@ -420,7 +420,7 @@ namespace Nemiro.OAuth.LoginForms
 
     private void GetAccessTokenThread(object args)
     {
-      Debug.WriteLine(string.Format("GetAccessTokenThread {0}", args), "LoginForm");
+      Debug.WriteLine(String.Format("GetAccessTokenThread {0}", args), "LoginForm");
 
       try
       {
@@ -433,7 +433,7 @@ namespace Nemiro.OAuth.LoginForms
         {
           this.UserInfo = this.Client.GetUserInfo();
 
-          Debug.WriteLine(string.Format("UserInfo {0}", this.UserInfo.Items), "LoginForm");
+          Debug.WriteLine(String.Format("UserInfo {0}", this.UserInfo.Items), "LoginForm");
         }
       }
       catch (Exception ex)
@@ -527,7 +527,7 @@ namespace Nemiro.OAuth.LoginForms
         return;
       }
 
-      Debug.WriteLine(string.Format("SetUrl {0}", url), "LoginForm");
+      Debug.WriteLine(String.Format("SetUrl {0}", url), "LoginForm");
 
       this.Timeout = false;
       this.timer1.Enabled = false;
@@ -636,7 +636,7 @@ namespace Nemiro.OAuth.LoginForms
     /// </summary>
     protected internal void KillCookies()
     {
-      if (this.webBrowser1.Document != null && !string.IsNullOrEmpty(this.webBrowser1.Document.Cookie))
+      if (this.webBrowser1.Document != null && !String.IsNullOrEmpty(this.webBrowser1.Document.Cookie))
       {
         var cookies = webBrowser1.Document.Cookie.Split(';').ToList();
 
@@ -646,7 +646,7 @@ namespace Nemiro.OAuth.LoginForms
 
           while (domains.Count > 1)
           {
-            this.webBrowser1.Document.Cookie = string.Format("{0}=; Thu, 01-Jan-1970 00:00:01 GMT; domain={1};", c.Split('=').First().Trim(), String.Join(".", domains.ToArray()));
+            this.webBrowser1.Document.Cookie = String.Format("{0}=; Thu, 01-Jan-1970 00:00:01 GMT; domain={1};", c.Split('=').First().Trim(), String.Join(".", domains.ToArray()));
             // path=
             domains.RemoveAt(0);
           }
@@ -666,7 +666,7 @@ namespace Nemiro.OAuth.LoginForms
 
       this.SetUrl
       (
-        string.Format("{0}://{1}", u.Scheme, u.Host),
+        String.Format("{0}://{1}", u.Scheme, u.Host),
         (object sender, WebBrowserCallbackEventArgs e) =>
         {
           // remove cookies

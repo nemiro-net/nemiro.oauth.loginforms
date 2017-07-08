@@ -15,6 +15,7 @@
 // ----------------------------------------------------------------------------
 using Nemiro.OAuth.Clients;
 using System.Windows.Forms;
+using System;
 
 namespace Nemiro.OAuth.LoginForms
 {
@@ -92,7 +93,7 @@ namespace Nemiro.OAuth.LoginForms
             {
               foreach (HtmlElement link in webBrowser.Document.Links)
               {
-                if (!string.IsNullOrEmpty(link.GetAttribute("href")) && link.GetAttribute("href").Contains("mode=logout"))
+                if (!String.IsNullOrEmpty(link.GetAttribute("href")) && link.GetAttribute("href").Contains("mode=logout"))
                 {
                   link.InvokeMember("click");
                   return;

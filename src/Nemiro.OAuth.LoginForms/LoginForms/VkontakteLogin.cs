@@ -72,6 +72,21 @@ namespace Nemiro.OAuth.LoginForms
       this.Icon = Properties.Resources.vkontakte;
     }
 
+    /// <summary>
+    /// Handler of event to receive notification when the document finishes loading. 
+    /// </summary>
+    /// <param name="webBrowser">The <see cref="System.Windows.Forms.WebBrowser"/> instance.</param>
+    /// <param name="url">The loaded url.</param>
+    public void WebDocumentLoaded(System.Windows.Forms.WebBrowser webBrowser, Uri url)
+    {
+      if (url.Fragment.IndexOf("code=") != -1)
+      {
+        // is result
+        var v = UniValue.ParseParameters(url.Fragment.Substring(1));
+        this.GetAccessToken(v["code"].ToString());
+      }
+    }
+
   }
 
 }
