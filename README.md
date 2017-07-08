@@ -27,9 +27,16 @@ For example, **DropBox**:
 **C#**
 ```C#
 // create login form
-var login = new DropboxLogin("5nkunr8uscwfoba", "n7x9icfwoe6dehq") { Owner = this };
+var login = new DropboxLogin
+(
+  "5nkunr8uscwfoba", 
+  "n7x9icfwoe6dehq", 
+  "https://oauthproxy.nemiro.net/"
+) { Owner = this };
+
 // show login form
 login.ShowDialog();
+
 // authorization is success
 if (login.IsSuccessfully)
 {
@@ -41,9 +48,11 @@ if (login.IsSuccessfully)
 **Visual Basic .NET**
 ```VBNet
 ' create login form
-Dim login As New DropboxLogin("5nkunr8uscwfoba", "n7x9icfwoe6dehq") With { .Owner = Me }
+Dim login As New DropboxLogin("5nkunr8uscwfoba", "n7x9icfwoe6dehq", "https://oauthproxy.nemiro.net/") With { .Owner = Me }
+
 ' show login form
 login.ShowDialog()
+
 ' authorization is success
 If login.IsSuccessfully Then
   ' use the access token for requests to API

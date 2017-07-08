@@ -30,9 +30,16 @@
 **C#**
 ```C#
 // создаем форму
-var login = new DropboxLogin("5nkunr8uscwfoba", "n7x9icfwoe6dehq") { Owner = this };
+var login = new DropboxLogin
+(
+  "5nkunr8uscwfoba", 
+  "n7x9icfwoe6dehq", 
+  "https://oauthproxy.nemiro.net/"
+) { Owner = this };
+
 // показываем форму в режиме "диалог"
 login.ShowDialog();
+
 // если авторизация прошла успешно
 if (login.IsSuccessfully)
 {
@@ -44,9 +51,11 @@ if (login.IsSuccessfully)
 **Visual Basic .NET**
 ```VBNet
 ' создаем форму
-Dim login As New DropboxLogin("5nkunr8uscwfoba", "n7x9icfwoe6dehq") With { .Owner = Me }
+Dim login As New DropboxLogin("5nkunr8uscwfoba", "n7x9icfwoe6dehq", "https://oauthproxy.nemiro.net/") With { .Owner = Me }
+
 ' показываем форму в режиме "диалог"
 login.ShowDialog()
+
 ' если авторизация прошла успешно
 If login.IsSuccessfully Then
   ' получаем маркер доступа, который можно использовать для работы с API поставщика
