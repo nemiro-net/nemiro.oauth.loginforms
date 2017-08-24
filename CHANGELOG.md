@@ -2,7 +2,7 @@
 
 All notable changes to **Nemiro.OAuth.LoginForms** will be documented in this file.
 
-## [v1.7] - unreleased
+## [v1.7] - 2017-08-25
 
 In this release, the authentication logic has changed. 
 
@@ -35,6 +35,7 @@ In this release, the authentication logic has changed.
 
 ### Thanks
 
+* [Visio70](https://github.com/Visio70)
 * [santoshpasi](https://github.com/santoshpasi)
 
 ## [v1.6] - 2017-01-15

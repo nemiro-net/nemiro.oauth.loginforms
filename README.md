@@ -32,9 +32,11 @@ For example, **DropBox**:
 // create login form
 var login = new DropboxLogin
 (
-  "5nkunr8uscwfoba", 
-  "n7x9icfwoe6dehq", 
-  "https://oauthproxy.nemiro.net/"
+  clientId     : "5nkunr8uscwfoba", 
+  clientSecret : "n7x9icfwoe6dehq", 
+  returnUrl    : "https://oauthproxy.nemiro.net/",
+  autoLogout   : false,
+  loadUserInfo : false
 );
 
 login.Owner = this;
@@ -55,9 +57,11 @@ if (login.IsSuccessfully)
 ' create login form
 Dim login As New DropboxLogin _
 (
-  "5nkunr8uscwfoba", 
-  "n7x9icfwoe6dehq", 
-  "https://oauthproxy.nemiro.net/"
+  clientId     := "5nkunr8uscwfoba", 
+  clientSecret := "n7x9icfwoe6dehq", 
+  returnUrl    := "https://oauthproxy.nemiro.net/",
+  autoLogout   := False,
+  loadUserInfo := False
 )
 
 login.Owner = Me
